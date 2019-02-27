@@ -10,7 +10,7 @@
                             <div class="swiper-slide single-carousel-wrap slide-item-1"  v-if="product.img" style="border: 2px solid #e2e2e2;">
                                 <a :href="product.img" target="_blank"><img class="img-fluid"
                                                                             :src="product.img"
-                                                                            alt="Product's main image"/>
+                                                á                            alt="Product's main image"/>
                                 </a>
                             </div>
                             <div class="swiper-slide single-carousel-wrap slide-item-2" v-if="product.videoDataLink">

@@ -1,0 +1,35 @@
+{
+  "name": "pure-carat",
+  "version": "1.0.0",
+  "description": "e-commerce diamond store",
+  "author": "Yafim Barak and Haim Taragano",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/proxy": "^1.3.2",
+    "@nuxtjs/pwa": "^2.6.0",
+    "bootstrap": "^4.1.3",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.1.0",
+    "jquery": "^3.3.1",
+    "nuxt": "^2.4.0",
+    "style-loader": "^0.23.1",
+    "vue-awesome-swiper": "^3.1.3",
+    "vue-social-sharing": "^2.4.2",
+    "vuex": "^3.1.0"
+  },
+  "devDependencies": {
+    "node-sass": "^4.11.0",
+    "nodemon": "^1.18.9",
+    "sass-loader": "^7.1.0"
+  }
+}
