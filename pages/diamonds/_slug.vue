@@ -1,29 +1,29 @@
 <template>
-    <div class="single-product-page-content">
+    <div class="single-product-page-content pb-5 mt-5">
         <div class="row">
             <!-- Product Thumbnail Start -->
             <div class="col-lg-5">
-                <div class="product-thumbnail-wrap p-5">
+                <div class="product-thumbnail-wrap pr-5 pl-5 pt-0">
 
                     <div class="product-carousel" v-swiper:swiperTop="swiperOption" ref="swiperTop">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide single-carousel-wrap slide-item-1"  v-if="product.img" style="border: 2px solid #e2e2e2;">
+                        <div class="swiper-wrapper"><!--  v-if="product.img"-->
+                            <div class="swiper-slide single-carousel-wrap slide-item-1" key="1" style="border: 2px solid #e2e2e2;"  v-show="product.img">
                                 <a :href="product.img" target="_blank"><img class="img-fluid"
                                                                             :src="product.img"
-                                                á                            alt="Product's main image"/>
+                                                                          alt="Product's main image"/>
                                 </a>
-                            </div>
-                            <div class="swiper-slide single-carousel-wrap slide-item-2" v-if="product.videoDataLink">
-                                <div class="single-thumb-item" data-dismiss="modal" style=" height: 300px;overflow:hidden;">
-                                    <a>
-                                        <div class="product-iframe-wrap h-100">
-                                            <iframe style="width: 100%; height: 300px;" :src="product.videoDataLink" class="video-iframe product-video-frame"></iframe>
-                                        </div>
-                                    </a>
-                                    <img class="fa fa-video-camera" src="~assets/img/single-pro-thumb.jpg" alt="360 video">
-                                </div>
-                            </div>
-                            <div class="swiper-slide single-carousel-wrap slide-item-3" v-if="product.certLink">
+                            </div><!--v-if="product.videoDataLink"-->
+                            <div class="swiper-slide single-carousel-wrap slide-item-2" style="pointer-events: none;"  key="10" v-show="product.videoDataLink">
+                                <b-embed
+                                        type="iframe"
+                                        aspect="16by9"
+                                        :src="product.videoDataLink"
+                                        allowfullscreen
+                                        class="h-100"
+                                />
+
+                            </div><!-- v-if="product.certLink"-->
+                            <div class="swiper-slide single-carousel-wrap slide-item-3" key="3" v-show="product.certLink">
                                 <a :href="product.certLink" target="_blank">
                                     <img class="img-fluid" :src="product.certLink" alt="Certificate"/>
                                 </a>
@@ -35,25 +35,19 @@
                     </div>
                     <div class="product-thumb-carousel"  v-swiper:swiperThumbs="swiperThumbOption" ref="swiperThumbs">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide single-carousel-wrap slide-item-1"  v-if="product.img">
+                            <!-- -->
+                            <div class="swiper-slide single-carousel-wrap slide-item-1" v-show="product.img">
                                     <img class="img-fluid"
                                                                             :src="product.img"
                                                                             alt="Product's main image"/>
                             </div>
-                            <div class="swiper-slide single-carousel-wrap slide-item-2" v-if="product.videoDataLink">
-                               <!-- <div class="single-thumb-item" data-dismiss="modal" style=" height: 300px;overflow:hidden;">
-                                    <a>
-                                        <div class="product-iframe-wrap h-100">
-                                            <iframe style="width: 100%; height: 300px;" :src="product.videoDataLink" class="video-iframe product-video-frame"></iframe>
-                                        </div>
-                                    </a>
-                                </div>-->
-
+                            <!---->
+                            <div class="swiper-slide single-carousel-wrap slide-item-2"  key="2" v-show="product.videoDataLink">
                                 <div class="d-flex justify-content-center align-items-center h-100">
-                                    <i class="fa fa-camera fa-4x"></i>
+                                    <span class="iconify" data-icon="uil:video" data-inline="false" style="font-size: 6em"></span>
                                 </div>
-                            </div>
-                            <div class="swiper-slide single-carousel-wrap slide-item-3" v-if="product.certLink">
+                            </div><!-- -->
+                            <div class="swiper-slide single-carousel-wrap slide-item-3" key="3" v-show="product.certLink">
                                 <img class="img-fluid" :src="product.certLink" alt="Certificate"/>
                             </div>
                         </div>
@@ -175,7 +169,7 @@
                     },
                     autoplay: false,
                     speed: 1300,
-                    loop: true,
+                    loop: false,
                     height:'500px',
                     // some swiper options...
                     updateOnImagesReady:true
@@ -191,10 +185,13 @@
         },
         mounted() {
             this.$nextTick(() => {
-                const swiperTop = this.$refs.swiperTop.swiper;
-                const swiperThumbs = this.$refs.swiperThumbs.swiper;
-                swiperTop.controller.control = swiperThumbs;
-                swiperThumbs.controller.control = swiperTop;
+                const swiperTop = this.$refs.swiperTop;
+                const swiperThumbs = this.$refs.swiperThumbs;
+                debugger;
+                if(swiperTop && swiperThumbs && 'swiper' in swiperTop && 'swiper' in swiperThumbs){
+                    swiperTop.swiper.controller.control = swiperThumbs.swiper;
+                    swiperThumbs.swiper.controller.control = swiperTop.swiper;
+                }
             })
         },
         /*
@@ -218,6 +215,11 @@
     .product-carousel{
         .swiper-wrapper,.swiper-slide{
             min-height: 700px;
+/*            display: flex;
+            justify-content: center;
+            align-items: center;*/
+        }
+        .slide-item-1{
             display: flex;
             justify-content: center;
             align-items: center;
@@ -229,8 +231,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 50%;
         }
+        .swiper-slide{
+            width: 25%;
+        }
+    }
+    .embed-responsive{
+        height: 700px;
     }
 
 </style>

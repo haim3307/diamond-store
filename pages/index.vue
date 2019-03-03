@@ -51,25 +51,8 @@
           <div class="row custom-padding">
             <!-- Single Product Start -->
 
-            <gallery-item class="col-sm-6 col-lg-3" v-for="featuredItem in featuredItems" :key="featuredItem.id" :product="featuredItem">
-              <div class="single-product-item">
-                <figure class="product-thumb">
-                  <a href="#"><img src="~assets/img/product-1.jpg" alt="Product" class="img-fluid"></a>
-                </figure>
-                <div class="product-details">
-                  <h2><a href="single-product.html">Crown Summit Backpack</a></h2>
-                  <div class="rating">
-                    <i class="fa fa-star" />
-                    <i class="fa fa-star" />
-                    <i class="fa fa-star" />
-                    <i class="fa fa-star-half" />
-                    <i class="fa fa-star-o" />
-                  </div>
-                  <span class="price">$52.00</span>
-                  <a href="single-product.html" class="btn btn-add-to-cart">+ Add to Cart</a>
-                </div>
-                <span class="product-bedge">New</span>
-              </div>
+            <gallery-item class="col-sm-6 col-lg-3" v-for="featuredItem in featuredItems"  @addToCart="$event.addToCart(featuredItem)" :key="featuredItem.id" :product="featuredItem">
+
             </gallery-item>
             <!-- Single Product End -->
           </div>

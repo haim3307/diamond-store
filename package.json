@@ -20,6 +20,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
+    "ion-rangeslider": "^2.3.0",
     "jquery": "^3.3.1",
     "nuxt": "^2.4.0",
     "style-loader": "^0.23.1",

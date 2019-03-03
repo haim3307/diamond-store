@@ -7,7 +7,7 @@ class ApiService{
         Vue.prototype = { ...Vue.prototype , ...(new ApiService()) };
     }*/
 
-    loadGalleryData (prop, val) {
+    loadGalleryData (prop, val) {debugger;
         this.ajaxDataStatus = 'loading';
         this.products = [];
         this.cartDash = [];
@@ -17,20 +17,18 @@ class ApiService{
             this.queryParams['q'] = {};
         }
 
-        if(typeof prop == "number"){
-            this.queryParams['page'] = prop;
-        }
-        if(prop === 'sort' || prop === 'RPP'){
+        if(prop === 'sort' || prop === 'RPP' || prop === 'page'){
             this.queryParams[prop] = val;
         }
         else {
             this.queryParams['q'][prop] = val;
         }
 
-        if(typeof prop !== "number")
+/*        if(typeof prop !== "number")
         {
             this.queryParams['page'] = 1;
-        }
+        }*/
+
 
         for (var param in this.queryParams.q)
         {

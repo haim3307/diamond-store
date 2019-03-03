@@ -56,7 +56,7 @@
                     </ul>
                 </div>
                 <div class="gallery-product-actions">
-                    <a class="btn btn-add-to-cart" @click.self="addToCart()" href="javascript:void(0)">+ Add to Cart</a>
+                    <a class="btn btn-add-to-cart" @click.self="emitAddToCart();$event.stopPropagation()" href="javascript:void(0)">+ Add to Cart</a>
 
                     <!--                    <a href="single-product.html" class="btn btn-add-to-cart btn-whislist">+
                                             Wishlist</a>
@@ -105,12 +105,15 @@
 
     export default {
         name: "gallery-item",
-        props: ['product'],
+        props: ['product','DashMode'],
         data() {
             return {
                 inDash : false,
                 itemImage : false,
-                imageStatus: false
+                imageStatus: false,
+                source:this.$parent,
+                DashMode: false
+
             }
         },
         created(){
@@ -121,28 +124,30 @@
         },
         methods:{
             addToCartDash(product) {
-                //this.$root.addToCartDash(this,product);
+                if(this.DashMode) this.source.addToCartDash(this,product);
             },
             addToCart() {
                 this.$store.dispatch('saveToCart',this.product);
             },
             sendCartDash(e) {
                 e.stopPropagation();
-                this.$root.sendCartDash(this);
+                this.source.sendCartDash(this);
             },
             quickItemChange(e){
-                $('#quickView').modal('show');
                 this.$root.$emit('quickItemChange',this.product);
             },
             itemImageHandler() {
                 this.imageStatus = 'defaultLoading';
                 this.itemImage = this.product.default_img;
+            },
+            emitAddToCart(){
+                this.$emit('addToCart',this);
             }
 
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

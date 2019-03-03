@@ -7,15 +7,19 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const config = {
     state: () => ({
-        initialData: {}
+        initialData: {},
+        breadcrumbs: []
     }),
     actions: {
         async nuxtServerInit({ commit },{ app })
         {
             console.log('nnnnnnnnnnnnnnnnnnnnnnnnnn');
             const data = await app.$axios.$get('/api/api/globaldata.json');
-            console.log(data);
+            //console.log(data);
+            console.log('start : app.router',app.router.history.current.path,'end : app.router');
             commit('setInitialData',data);
+
+            /*commit('setBreadCrumb',paths);*/
         },
         saveToCart({state},product,element)
         {
@@ -48,6 +52,7 @@ const config = {
         {
             state.initialData = data;
         },
+
 
     },
     modules:{

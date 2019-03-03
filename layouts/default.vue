@@ -21,160 +21,44 @@
                     <li>
                       <nuxt-link to="/">Home</nuxt-link>
                     </li>
-                    <li class="dropdown-show">
-                      <a href="#">Shop</a>
-                      <ul class="mega-menu-wrap dropdown-nav">
-                        <li class="mega-menu-item">
-                          <a href="shop.html" class="mega-item-title">Shop
-                            Layout</a>
-                          <ul>
-                            <li><a href="shop.html">Shop Left Sidebar</a></li>
-                            <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
-                            <li><a href="shop-left-full-wide.html">Shop Left Full Wide</a></li>
-                            <li><a href="shop-right-full-wide.html">Shop Right Full Wide</a></li>
-                            <li><a href="shop-full-wide.html">Shop Without Sidebar</a></li>
-                          </ul>
-                        </li>
 
-                        <li class="mega-menu-item">
-                          <a href="single-product.html" class="mega-item-title">Single
-                            Products</a>
-                          <ul>
-                            <li><a href="single-product.html">Single Product</a></li>
-                            <li><a href="single-product-normal.html">Single Product Normal</a></li>
-                            <li><a href="single-product-group.html">Single Product Group</a></li>
-                            <li><a href="single-product-external.html">Single Product External</a></li>
-                          </ul>
+                    <li class="dropdown-show">
+                      <a href="#">Diamonds</a>
+                      <ul class="mega-menu-wrap dropdown-nav" style="    min-width: 219px;">
+                        <li class="mega-menu-item row d-flex">
+                          <div class="col-md-6">
+                            <nuxt-link :to="'/shop/diamonds/loose/'"  class="mega-item-title">
+                              Loose
+                            </nuxt-link>
+                            <ul>
+                              <template v-for="navItem in initialData.shapesArray">
+                                <li>
+                                  <nuxt-link :to="'/shop/diamonds/loose/'">
+                                    {{navItem[2]}}
+                                  </nuxt-link>
+                                </li>
+                              </template>
+                            </ul>
+                          </div>
+                          <div class="col-md-6">
+
+                            <nuxt-link :to="'/shop/diamonds/fancy/'"  class="mega-item-title">
+                              Fancy
+                            </nuxt-link>
+                            <ul>
+                              <template v-for="navItem in initialData.colorsArray">
+                                <li>
+                                  <nuxt-link :to="`/shop/diamonds/fancy/${navItem[2]}`">
+                                    {{navItem[2]}}
+                                  </nuxt-link>
+                                </li>
+                              </template>
+                            </ul>
+                          </div>
                         </li>
                       </ul>
                     </li>
-                    <li class="dropdown-show">
-                      <a href="#">Pages</a>
-                      <ul class="dropdown-nav">
-                        <li><a href="cart.html">Shopping Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                        <li><a href="compare.html">Compare</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
-                        <li><a href="login-register.html">Login & Register</a></li>
-                        <li><a href="my-account.html">My Account</a></li>
-                        <li><a href="404.html">404 Error</a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown-show">
-                      <a href="#">Men</a>
-                      <ul class="mega-menu-wrap dropdown-nav">
-                        <li class="mega-menu-item">
-                          <a
-                                  href="shop-left-full-wide.html"
-                                  class="mega-item-title"
-                          >Shirt</a>
-                          <ul>
-                            <li><a href="shop.html">Tops & Tees</a></li>
-                            <li><a href="shop.html">Polo Short Sleeve</a></li>
-                            <li><a href="shop.html">Graphic T-Shirts</a></li>
-                            <li><a href="shop.html">Jackets & Coats</a></li>
-                            <li><a href="shop.html">Fashion Jackets</a></li>
-                          </ul>
-                        </li>
 
-                        <li class="mega-menu-item">
-                          <a
-                                  href="shop-left-full-wide.html"
-                                  class="mega-item-title"
-                          >Jeans</a>
-                          <ul>
-                            <li><a href="shop.html">Crochet</a></li>
-                            <li><a href="shop.html">Sleeveless</a></li>
-                            <li><a href="shop.html">Stripes</a></li>
-                            <li><a href="shop.html">Sweaters</a></li>
-                            <li><a href="shop.html">Hoodies</a></li>
-                          </ul>
-                        </li>
-
-                        <li class="mega-menu-item">
-                          <a
-                                  href="shop-left-full-wide.html"
-                                  class="mega-item-title"
-                          >Shoes</a>
-                          <ul>
-                            <li><a href="shop.html">Tops & Tees</a></li>
-                            <li><a href="shop.html">Polo Short Sleeve</a></li>
-                            <li><a href="shop.html">Graphic T-Shirts</a></li>
-                            <li><a href="shop.html">Jackets & Coats</a></li>
-                            <li><a href="shop.html">Fashion Jackets</a></li>
-                          </ul>
-                        </li>
-
-                        <li class="mega-menu-item">
-                          <a
-                                  href="shop-left-full-wide.html"
-                                  class="mega-item-title"
-                          >Watches</a>
-                          <ul>
-                            <li><a href="shop.html">Crochet</a></li>
-                            <li><a href="shop.html">Sleeveless</a></li>
-                            <li><a href="shop.html">Stripes</a></li>
-                            <li><a href="shop.html">Sweaters</a></li>
-                            <li><a href="shop.html">Hoodies</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown-show">
-                      <a href="shop-left-full-wide.html">Women</a>
-                      <ul class="mega-menu-wrap dropdown-nav">
-                        <li class="mega-menu-item">
-                          <a
-                                  href="shop-left-full-wide.html"
-                                  class="mega-item-title"
-                          >Kamiz</a>
-                          <ul>
-                            <li><a href="shop.html">Tops & Tees</a></li>
-                            <li><a href="shop.html">Polo Short Sleeve</a></li>
-                            <li><a href="shop.html">Graphic T-Shirts</a></li>
-                            <li><a href="shop.html">Jackets & Coats</a></li>
-                            <li><a href="shop.html">Fashion Jackets</a></li>
-                          </ul>
-                        </li>
-
-                        <li class="mega-menu-item">
-                          <a
-                                  href="shop-left-full-wide.html"
-                                  class="mega-item-title"
-                          >Life Style</a>
-                          <ul>
-                            <li><a href="shop.html">Crochet</a></li>
-                            <li><a href="shop.html">Sleeveless</a></li>
-                            <li><a href="shop.html">Stripes</a></li>
-                            <li><a href="shop.html">Sweaters</a></li>
-                            <li><a href="shop.html">Hoodies</a></li>
-                          </ul>
-                        </li>
-
-                        <li class="mega-menu-item">
-                          <a
-                                  href="shop-left-full-wide.html"
-                                  class="mega-item-title"
-                          >Shoes</a>
-                          <ul>
-                            <li><a href="shop.html">Tops & Tees</a></li>
-                            <li><a href="shop.html">Polo Short Sleeve</a></li>
-                            <li><a href="shop.html">Graphic T-Shirts</a></li>
-                            <li><a href="shop.html">Jackets & Coats</a></li>
-                            <li><a href="shop.html">Fashion Jackets</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown-show">
-                      <a href="#">Blog</a>
-                      <ul class="dropdown-nav">
-                        <li><a href="blog.html">Blog Right Sidebar</a></li>
-                        <li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
-                        <li><a href="blog-grid.html">Blog Grid Layout</a></li>
-                        <li><a href="single-blog.html">Blog Details</a></li>
-                      </ul>
-                    </li>
                     <li>
                       <nuxt-link to="/contact-us">Contact Us</nuxt-link>
                     </li>
@@ -250,6 +134,25 @@
     </b-navbar>
 
     <!--== Header Area End ==-->
+    <div v-if="breadcrumbs && ('showBreadcrumbs' in $router.currentRoute.meta && $router.currentRoute.meta.showBreadcrumbs) || !('showBreadcrumbs' in $router.currentRoute.meta)">
+      <div id="page-title-area" class="d-flex justify-content-center align-items-center" style="min-height: 106.5px">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 text-center">
+              <div class="page-title-content">
+<!--                <?php if(templatesHelper::has_section('bread_title')): ?>
+                <h1><?= templatesHelper::yield('bread_title') ?></h1>
+                <?php elseif(isset($bread_title)): ?>
+                <h1><?= $bread_title ?></h1>
+                <?php endif; ?>-->
+                <b-breadcrumb :items="breadcrumbs" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!--== Search Box Area Start ==-->
     <div class="body-popup-modal-area">
@@ -270,8 +173,13 @@
     <!--== Search Box Area End ==-->
 
 
-    <nuxt />
-
+<!--
+    <nuxt :key="$router.fullPath"/>
+-->
+<!--    <pre>
+        {{$router.currentRoute.meta}}
+    </pre>-->
+    <router-view :key="$route.fullPath"></router-view>
 
     <!-- Footer Area Start -->
     <footer id="footer-area">
@@ -284,7 +192,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/air-plane.png" alt="WorldWide Shipping">
+                    <img src="~assets/img/air-plane.png" alt="WorldWide Shipping"/>
                   </figure>
                   <div class="callto-info">
                     <h2>Free Shipping Worldwide</h2>
@@ -298,7 +206,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/support.png" alt="Support">
+                    <img src="~assets/img/support.png" alt="Support"/>
                   </figure>
                   <div class="callto-info">
                     <h2>24/7 CUSTOMER SERVICE</h2>
@@ -312,7 +220,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/money-back.png" alt="Money Back">
+                    <img src="~assets/img/money-back.png" alt="Money Back"/>
                   </figure>
                   <div class="callto-info">
                     <h2>MONEY BACK Guarantee!</h2>
@@ -326,7 +234,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/cog.png" alt="Guide">
+                    <img src="~assets/img/cog.png" alt="Guide"/>
                   </figure>
                   <div class="callto-info">
                     <h2>SHOPPING GUIDE</h2>
@@ -348,18 +256,70 @@
             <div class="row">
               <div class="col-lg-12 text-center">
                 <div class="follow-content-wrap">
-                  <a href="index.html" class="logo"><img src="~assets/img/logo.png" alt="logo"></a>
-                  <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum</p>
+                  <a href="<?= seo('/') ?>" class="logo">
+                    <img src="~assets/img/layout/pure-carat.png" class="img-fluid" style="max-width: 87px" alt="Logo"/>
+                  </a>
 
-                  <div class="footer-social-icons">
-                    <a href="#"><i class="fa fa-facebook" /></a>
-                    <a href="#"><i class="fa fa-twitter" /></a>
-                    <a href="#"><i class="fa fa-pinterest" /></a>
-                    <a href="#"><i class="fa fa-instagram" /></a>
-                    <a href="#"><i class="fa fa-flickr" /></a>
-                  </div>
+                  <social-sharing :url="$root.baseUrlSSL"
+                                  title="The Progressive JavaScript Framework"
+                                  description="Intuitive, Fast and Composable MVVM for building interactive interfaces."
+                                  quote="Vue is a progressive framework for building user interfaces."
+                                  hashtags="vuejs,javascript,framework"
+                                  twitter-user="vuejs"
+                                  inline-template
+                  >
+                    <div class="footer-social-icons">
+                      <!--
+                                                      <network network="twitter">
+                                                          <i class="fa fa-twitter"></i> Twitter
+                                                      </network>
+                                                      <network network="pinterest">
+                                                          <i class="fa fa-pinterest"></i> Pinterest
+                                                      </network>
+                                                      <a href="#"><i class="fa fa-instagram"></i></a>
+                                                      <a href="#"><i class="fa fa-flickr"></i></a>-->
+                      <!--                                <network network="email">-->
+                      <!--                                    <i class="fa fa-envelope"></i>-->
+                      <!--                                </network>-->
+                      <network network="facebook">
+                        <i class="fa fa-facebook"></i>
+                      </network>
+                      <!--                                <network network="googleplus">-->
+                      <!--                                    <i class="fa fa-google-plus"></i>-->
+                      <!--                                </network>-->
+                      <!--                                <network network="line">
+                                                          <i class="fa fa-line"></i>
+                                                      </network>-->
+                      <!--                                <network network="linkedin">-->
+                      <!--                                    <i class="fa fa-linkedin"></i>-->
+                      <!--                                </network>-->
+                      <!--                                <network network="odnoklassniki">
+                                                          <i class="fa fa-odnoklassniki"></i> Odnoklassniki
+                                                      </network>-->
+                      <network network="pinterest">
+                        <i class="fa fa-pinterest"></i>
+                      </network>
+                      <!--                                <network network="reddit">-->
+                      <!--                                    <i class="fa fa-reddit"></i>-->
+                      <!--                                </network>-->
+                      <network network="twitter">
+                        <i class="fa fa-twitter"></i>
+                      </network>
+                      <!--                                <network network="vk">
+                                                          <i class="fa fa-vk"></i> VKontakte
+                                                      </network>
+                                                      <network network="weibo">
+                                                          <i class="fa fa-weibo"></i> Weibo
+                                                      </network>-->
+                      <!--                                <network network="whatsapp">-->
+                      <!--                                    <i class="fa fa-whatsapp"></i>-->
+                      <!--                                </network>-->
+                    </div>
+                  </social-sharing>
 
-                  <a href="#"><img src="~assets/img/payment.png" alt="Payment Method"></a>
+
+                  <!--                        <a href="#"><img src="<?/*= img_base() */?>/payment.png" alt="Payment Method"/></a>-->
+                  <img style="    max-width: 137px;" src="~assets/img/layout/paypal-784404.svg" alt="">
                 </div>
               </div>
             </div>
@@ -376,22 +336,22 @@
               <div class="col-lg-12">
                 <div class="imgage-gallery-carousel owl-carousel">
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-1.jpg" alt="Gallery"></a>
+                    <a href="#"><img src="~assets/img/gallery-img-1.jpg" alt="Gallery"/></a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-2.jpg" alt="Gallery"></a>
+                    <a href="#"><img src="~assets/img/gallery-img-2.jpg" alt="Gallery"/></a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-3.jpg" alt="Gallery"></a>
+                    <a href="#"><img src="~assets/img/gallery-img-3.jpg" alt="Gallery"/></a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-4.jpg" alt="Gallery"></a>
+                    <a href="#"><img src="~assets/img/gallery-img-4.jpg" alt="Gallery"/></a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-3.jpg" alt="Gallery"></a>
+                    <a href="#"><img src="~assets/img/gallery-img-3.jpg" alt="Gallery"/></a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-2.jpg" alt="Gallery"></a>
+                    <a href="#"><img src="~assets/img/gallery-img-2.jpg" alt="Gallery"/></a>
                   </div>
                 </div>
               </div>
@@ -407,37 +367,92 @@
           <div class="row">
             <div class="col-lg-12 text-center">
               <div class="copyright-text">
-                <p>Copyright © 2018 Ruby. All rights reserved.</p>
+                <p>Copyright © {{(new Date()).getFullYear()}} Pure Carat. All rights reserved.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!-- Copyright Area End -->
+
     </footer>
     <!-- Footer Area End -->
 
     <!-- Scroll to Top Start -->
     <a href="#" class="scrolltotop"><i class="fa fa-angle-up" /></a>
     <!-- Scroll to Top End -->
+    <QuickItemModal></QuickItemModal>
   </div>
 </template>
 
-<style>
-@import "https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i|Dancing+Script|Sacramento|Montserrat|Playfair+Display:400,400i,700,700i";
+<style lang="scss">
+    .breadcrumb-item{
+        text-transform: capitalize;
+        &.active{
+          color: white;
+        }
+    }
+  .breadcrumb-item + .breadcrumb-item::before{
+      content: none;
+  }
+  .breadcrumb li{
+     font-size: 1.5rem;
+  }
 </style>
 <script>
+  import QuickItemModal from '@/components/modals/QuickItemModal';
   export default {
+      components:{
+          QuickItemModal
+      },
+      watch:{
+          '$route.fullPath' : {
+              handler: 'setBreadcrumbs',
+              deep: true,
+              immediate: true
+          }
+      },
+      methods:{
+          setBreadcrumbs(){
+              const nuxtRoute = this.$router.currentRoute;
+              let currentPath = nuxtRoute.path;
+              let paths = currentPath.match(/[^/].*[^/]/g);
+
+              function setBreadCrumb(state,paths) {
+                  paths = Array.isArray(paths) && paths.length?paths[0].split("/"):[];
+
+                  let breadcrumbs = paths.reduce((breadcrumbArray, path, idx) => {
+                      breadcrumbArray.push({
+                          path: path,
+                          to: breadcrumbArray[idx - 1]
+                              ? "/" + breadcrumbArray[idx - 1].path + "/" + path
+                              : "/" + path,
+                          text:  path.replace('-',' '),
+                      });
+                      /*this.$route.matched[idx].meta.breadCrumb ||*/
+                      return breadcrumbArray;
+                  }, []);
+                  return breadcrumbs;
+              }
+              this.breadcrumbs = setBreadCrumb(nuxtRoute,paths);
+          }
+      },
       created(){
 
       },
       computed: {
-          initialData () {
+          initialData () {debugger;
               return this.$store.state.initialData;
-          }
+          },
+
       },
       mounted(){
 
+      },
+      data(){
+          return {
+              breadcrumbs:[]
+          }
       }
   }
 </script>
