@@ -3,6 +3,9 @@ const webpack = require('webpack');
 
 module.exports = {
   mode: 'universal',
+  server: {
+    port: 3000, // default: 3000
+  },
   /*
   ** Headers of the page
   */
@@ -54,13 +57,21 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-     '@nuxtjs/axios',
+    "nuxt-typescript",
+        // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/axios',
     // Doc: https://bootstrap-vue.js.org/docs/
     'bootstrap-vue/nuxt',
     '@nuxtjs/pwa',
       ['@nuxtjs/proxy', { "secure": false,      changeOrigin: true }],
+      ['nuxt-validate', {
+        lang: 'en',
+        // regular vee-validate options 
+      }]
   ],
+  typescript: {
+    formatter: "default"
+  },
   /*
   ** Axios module configuration
   */
@@ -68,9 +79,9 @@ module.exports = {
     // See https://github.com/nuxt-community/axios-module#options
       proxy: true
   },
-    proxy: {
-      '/api/': { target: 'https://www.purecarat.com', pathRewrite: {'^/api/': ''} ,"secure": false,changeOrigin: true}
-    },
+  proxy: {
+    '/api/': { target: 'https://www.purecarat.com', pathRewrite: {'^/api/': ''} ,"secure": false,changeOrigin: true}
+  },
   /*
   ** Build configuration
   */
@@ -113,7 +124,7 @@ module.exports = {
                 console.log(nuxtRoute.name in routes,'has',nuxtRoute.name);
                 console.log(nuxtRoute,'meta:');
 
-
+          
 
                 if(nuxtRoute.name in routes)
                 {
@@ -122,6 +133,7 @@ module.exports = {
                     switch (route.mode)
                     {
                         case 'replace':
+                        console.log(resolve(__dirname, route.component),':');
                             overriddenRoute = {
                                 name: nuxtRoute.name,
                                 ...route,

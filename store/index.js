@@ -1,4 +1,4 @@
-import vuex from 'vuex'
+import vuex from 'vuex';
 import ApiModule from './modules/api';
 import $ from "jquery";
 
@@ -11,10 +11,12 @@ const config = {
         breadcrumbs: []
     }),
     actions: {
-        async nuxtServerInit({ commit },{ app })
+        async nuxtServerInit({ commit },store)
         {
-            console.log('nnnnnnnnnnnnnnnnnnnnnnnnnn');
-            const data = await app.$axios.$get('/api/api/globaldata.json');
+            const {app,$axios} = store;
+
+            console.log(Object.keys(store));
+            const data = await $axios.$get('/api/api/globaldata.json');
             //console.log(data);
             console.log('start : app.router',app.router.history.current.path,'end : app.router');
             commit('setInitialData',data);
@@ -31,7 +33,6 @@ const config = {
                         setTimeout(function () {
                             $('.mini-cart').removeClass('hover');
                         },3 * 1000);
-                        debugger;
                         state.initialData.orderItems.push(product);
                         if('seo' in this && 'cart' in this.seo)
                             window.location = this.seo.cart;
@@ -45,6 +46,7 @@ const config = {
             await this.$axios.$get(deleteUrl);
             state.initialData.orderItems = state.initialData.orderItems.filter( item => item.productOrderId != id);
         }
+
 
     },
     mutations:{

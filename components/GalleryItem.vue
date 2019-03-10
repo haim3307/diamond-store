@@ -82,7 +82,16 @@
                                         twitter-user="vuejs"
                                         inline-template>
                             <div class="vue-social-sharing">
-                                 <!--<?php include VIEW_V3_DIR . '/includes/gallery/items/includes/social-share-list.html.php' ?>-->
+                                <network network="facebook" class="socialItem">
+                                    <i class="fa fa-facebook"/>
+                                </network>
+                                <network network="whatsapp" class="socialItem">
+                                    <i class="fa fa-whatsapp"/>
+                                </network>
+                                <network network="googleplus" class="socialItem">
+                                    <i class="fa fa-google-plus"/>
+                                </network>
+                                           
                             </div>
                         </social-sharing>
 
@@ -105,15 +114,13 @@
 
     export default {
         name: "gallery-item",
-        props: ['product','DashMode'],
+        props: {product:{},DashMode:{default:false}},
         data() {
             return {
                 inDash : false,
                 itemImage : false,
                 imageStatus: false,
                 source:this.$parent,
-                DashMode: false
-
             }
         },
         created(){

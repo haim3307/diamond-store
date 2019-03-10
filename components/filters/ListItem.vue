@@ -15,7 +15,7 @@
         },
         methods: {
             toggleItem() {
-                let prop = this.$parent.prop, params = this.$parent.params, val = this.item[0];debugger;
+                let prop = this.$parent.prop, params = this.$parent.params, val = this.item[0];
                 params[prop] = prop in params && params[prop].length ? params[prop].split(',') : [];
 
                 if (params[prop].indexOf(val.toString()) !== -1) {

@@ -191,7 +191,7 @@ export default {
   },
   mounted() {
 /*
-      this.$initialData;debugger;
+      this.$initialData;
 */
 /*
       this.mySwiper.slideTo(3, 1000, false)

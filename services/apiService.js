@@ -3,7 +3,6 @@ import $ from 'jquery';
 class ApiService{
 /*
     install(Vue, options){
-        debugger;
         Vue.prototype = { ...Vue.prototype , ...(new ApiService()) };
     }*/
 
@@ -64,7 +63,7 @@ class ApiService{
 
     }
     saveToCart({state},product,element)
-    {debugger;
+    {
         this.$axios.$post('/api/cart/add/product_id/'+product.id+'.json?no-redirect=1')
             .then( result =>  {
 
@@ -74,7 +73,6 @@ class ApiService{
                     setTimeout(function () {
                         $('.mini-cart').removeClass('hover');
                     },3 * 1000);
-                    debugger;
                     state.initialData.orderItems.push(product);
                     if('seo' in this && 'cart' in this.seo)
                         window.location = this.seo.cart;

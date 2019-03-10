@@ -12,7 +12,6 @@
               </a>
             </div>
             <!-- Logo Area End -->
-
             <!-- Navigation Area Start -->
             <div class="col-3 col-lg-9 col-xl-8 m-auto">
               <div class="main-menu-wrap">
@@ -27,30 +26,25 @@
                       <ul class="mega-menu-wrap dropdown-nav" style="    min-width: 219px;">
                         <li class="mega-menu-item row d-flex">
                           <div class="col-md-6">
-                            <nuxt-link :to="'/shop/diamonds/loose/'"  class="mega-item-title">
-                              Loose
-                            </nuxt-link>
+                            <nuxt-link :to="'/shop/diamonds/loose/'" class="mega-item-title">Loose</nuxt-link>
                             <ul>
                               <template v-for="navItem in initialData.shapesArray">
-                                <li>
-                                  <nuxt-link :to="'/shop/diamonds/loose/'">
-                                    {{navItem[2]}}
-                                  </nuxt-link>
+                                <li :key="navItem[2]">
+                                  <nuxt-link
+                                    :to="`/shop/diamonds/loose/${navItem[2].toLocaleLowerCase()}`"
+                                  >{{navItem[2]}}</nuxt-link>
                                 </li>
                               </template>
                             </ul>
                           </div>
                           <div class="col-md-6">
-
-                            <nuxt-link :to="'/shop/diamonds/fancy/'"  class="mega-item-title">
-                              Fancy
-                            </nuxt-link>
+                            <nuxt-link :to="'/shop/diamonds/fancy/'" class="mega-item-title">Fancy</nuxt-link>
                             <ul>
                               <template v-for="navItem in initialData.colorsArray">
-                                <li>
-                                  <nuxt-link :to="`/shop/diamonds/fancy/${navItem[2]}`">
-                                    {{navItem[2]}}
-                                  </nuxt-link>
+                                <li :key="navItem[2]">
+                                  <nuxt-link
+                                    :to="`/shop/diamonds/fancy/${navItem[2].toLocaleLowerCase()}`"
+                                  >{{navItem[2]}}</nuxt-link>
                                 </li>
                               </template>
                             </ul>
@@ -67,60 +61,89 @@
               </div>
             </div>
             <!-- Navigation Area End -->
-
             <!-- Header Right Meta Start -->
             <div class="col-6 col-lg-2 m-auto">
               <div class="header-right-meta text-right">
                 <ul>
-                  <li><a href="#" class="modal-active"><i class="fa fa-search" /></a></li>
+                  <li>
+                    <a href="#" class="modal-active">
+                      <i class="fa fa-search"/>
+                    </a>
+                  </li>
                   <li class="settings">
-                    <a href="#"><i class="fa fa-cog" /></a>
+                    <a href="#">
+                      <i class="fa fa-cog"/>
+                    </a>
                     <div class="site-settings d-block d-sm-flex">
                       <dl class="currency">
                         <dt>Currency</dt>
                         <dd class="current">
-                          <a href="#">USD</a>
+                          <a href="javascript:void(0);">USD</a>
                         </dd>
-                        <dd><a href="#">AUD</a></dd>
-                        <dd><a href="#">CAD</a></dd>
-                        <dd><a href="#">BDT</a></dd>
+                        <!--                                <dd><a href="#">AUD</a></dd>-->
+                        <!--                                <dd><a href="#">CAD</a></dd>-->
+                        <!--                                <dd><a href="#">BDT</a></dd>-->
                       </dl>
 
                       <dl class="my-account">
                         <dt>My Account</dt>
-                        <dd><a href="#">Dashboard</a></dd>
-                        <dd><a href="#">Profile</a></dd>
-                        <dd><a href="#">Sign</a></dd>
+                        <dd v-if="initialData.is_logged_in">
+                          <a href="#>">Panel</a>
+                        </dd>
+                        <dd v-if="initialData.is_logged_in">
+                          <a href="#">Orders</a>
+                        </dd>
+                        <dd v-if="!initialData.is_logged_in">
+                          <nuxt-link to="/sign-in">Sign In</nuxt-link>
+                        </dd>
+                        <dd v-if="!initialData.is_logged_in">
+                          <nuxt-link to="/join-us">Join Us</nuxt-link>
+                        </dd>
+                        <dd v-if="initialData.is_logged_in">
+                          <form action="/api/users/logout" method="post">
+                            <a href>Sign Out</a>
+                          </form>
+                        </dd>
                       </dl>
 
                       <dl class="language">
                         <dt>Language</dt>
                         <dd class="current">
-                          <a href="#">English (US)</a>
+                          <a href="javascript:void(0);">English (US)</a>
                         </dd>
-                        <dd><a href="#">English (UK)</a></dd>
-                        <dd><a href="#">Chinees</a></dd>
-                        <dd><a href="#">Bengali</a></dd>
-                        <dd><a href="#">Hindi</a></dd>
-                        <dd><a href="#">Japanees</a></dd>
+                        <!--                                <dd><a href="#">English (UK)</a></dd>-->
+                        <!--                                <dd><a href="#">Chinees</a></dd>-->
+                        <!--                                <dd><a href="#">Bengali</a></dd>-->
+                        <!--                                <dd><a href="#">Hindi</a></dd>-->
+                        <!--                                <dd><a href="#">Japanees</a></dd>-->
                       </dl>
                     </div>
                   </li>
                   <li class="shop-cart">
-                    <a href="#"><i class="fa fa-shopping-bag" /> <span
-                            class="count" v-html="initialData.orderItems.length"></span></a>
+                    <nuxt-link to="/cart">
+                      <i class="fa fa-shopping-bag"/>
+                      <span class="count" v-html="initialData.orderItems.length"></span>
+                    </nuxt-link>
                     <div class="mini-cart" ref="miniCart">
                       <div class="mini-cart-body">
-                        <div v-if="initialData.orderItems.length" v-show="initialData.orderItems.length" style="display: none">
-                          <cart-item class="single-cart-item d-flex" v-for="product in initialData.orderItems" :product="product" :key="'p-'+product.id"></cart-item>
+                        <div
+                          v-if="initialData.orderItems.length"
+                          v-show="initialData.orderItems.length"
+                          style="display: none"
+                        >
+                          <cart-item
+                            class="single-cart-item d-flex"
+                            v-for="product in initialData.orderItems"
+                            :product="product"
+                            :key="'p-'+product.id"
+                          ></cart-item>
                         </div>
                         <div v-else>
                           <h6 class="h4 text-center">Cart is empty.</h6>
                         </div>
-
                       </div>
                       <div class="mini-cart-footer">
-                        <a href="checkout.html" class="btn-add-to-cart">Checkout</a>
+                        <nuxt-link to="/checkout" class="btn-add-to-cart">Checkout</nuxt-link>
                       </div>
                     </div>
                   </li>
@@ -134,21 +157,26 @@
     </b-navbar>
 
     <!--== Header Area End ==-->
-    <div v-if="breadcrumbs && ('showBreadcrumbs' in $router.currentRoute.meta && $router.currentRoute.meta.showBreadcrumbs) || !('showBreadcrumbs' in $router.currentRoute.meta)">
-      <div id="page-title-area" class="d-flex justify-content-center align-items-center" style="min-height: 106.5px">
+    <div
+      v-if="breadcrumbs && ('showBreadcrumbs' in $router.currentRoute.meta && $router.currentRoute.meta.showBreadcrumbs) || !('showBreadcrumbs' in $router.currentRoute.meta)"
+    >
+      <div
+        id="page-title-area"
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 106.5px"
+      >
         <div class="container">
           <div class="row">
             <div class="col-12 text-center">
               <div class="page-title-content">
-<!--                <?php if(templatesHelper::has_section('bread_title')): ?>
+                <!--                <?php if(templatesHelper::has_section('bread_title')): ?>
                 <h1><?= templatesHelper::yield('bread_title') ?></h1>
                 <?php elseif(isset($bread_title)): ?>
                 <h1><?= $bread_title ?></h1>
                 <?php endif; ?>-->
-                <b-breadcrumb :items="breadcrumbs" />
+                <b-breadcrumb :items="breadcrumbs"/>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -156,14 +184,16 @@
 
     <!--== Search Box Area Start ==-->
     <div class="body-popup-modal-area">
-      <span class="modal-close"><img src="~assets/img/cancel.png" alt="Close" class="img-fluid"></span>
+      <span class="modal-close">
+        <img src="~assets/img/cancel.png" alt="Close" class="img-fluid">
+      </span>
       <div class="modal-container d-flex">
         <div class="search-box-area">
           <div class="search-box-form">
             <form action="#" method="post">
               <input type="search" placeholder="type keyword and hit enter">
               <button class="btn" type="button">
-                <i class="fa fa-search" />
+                <i class="fa fa-search"/>
               </button>
             </form>
           </div>
@@ -171,13 +201,11 @@
       </div>
     </div>
     <!--== Search Box Area End ==-->
-
-
-<!--
+    <!--
     <nuxt :key="$router.fullPath"/>
--->
-<!--    <pre>
-        {{$router.currentRoute.meta}}
+    -->
+    <!--    <pre>
+        {{$router.currentRoute.name}}
     </pre>-->
     <router-view :key="$route.fullPath"></router-view>
 
@@ -192,7 +220,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/air-plane.png" alt="WorldWide Shipping"/>
+                    <img src="~assets/img/air-plane.png" alt="WorldWide Shipping">
                   </figure>
                   <div class="callto-info">
                     <h2>Free Shipping Worldwide</h2>
@@ -206,7 +234,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/support.png" alt="Support"/>
+                    <img src="~assets/img/support.png" alt="Support">
                   </figure>
                   <div class="callto-info">
                     <h2>24/7 CUSTOMER SERVICE</h2>
@@ -220,7 +248,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/money-back.png" alt="Money Back"/>
+                    <img src="~assets/img/money-back.png" alt="Money Back">
                   </figure>
                   <div class="callto-info">
                     <h2>MONEY BACK Guarantee!</h2>
@@ -234,7 +262,7 @@
                 <!-- Single Call-to Action Start -->
                 <div class="single-callto-action d-flex">
                   <figure class="callto-thumb">
-                    <img src="~assets/img/cog.png" alt="Guide"/>
+                    <img src="~assets/img/cog.png" alt="Guide">
                   </figure>
                   <div class="callto-info">
                     <h2>SHOPPING GUIDE</h2>
@@ -248,7 +276,6 @@
         </div>
       </div>
       <!-- Footer Call to Action End -->
-
       <!-- Footer Follow Up Area Start -->
       <div class="footer-followup-area">
         <div class="ruby-container">
@@ -256,17 +283,23 @@
             <div class="row">
               <div class="col-lg-12 text-center">
                 <div class="follow-content-wrap">
-                  <a href="<?= seo('/') ?>" class="logo">
-                    <img src="~assets/img/layout/pure-carat.png" class="img-fluid" style="max-width: 87px" alt="Logo"/>
-                  </a>
+                  <nuxt-link to="/" class="logo">
+                    <img
+                      src="~assets/img/layout/pure-carat.png"
+                      class="img-fluid"
+                      style="max-width: 87px"
+                      alt="Logo"
+                    >
+                  </nuxt-link>
 
-                  <social-sharing :url="$root.baseUrlSSL"
-                                  title="The Progressive JavaScript Framework"
-                                  description="Intuitive, Fast and Composable MVVM for building interactive interfaces."
-                                  quote="Vue is a progressive framework for building user interfaces."
-                                  hashtags="vuejs,javascript,framework"
-                                  twitter-user="vuejs"
-                                  inline-template
+                  <social-sharing
+                    :url="$root.baseUrlSSL"
+                    title="The Progressive JavaScript Framework"
+                    description="Intuitive, Fast and Composable MVVM for building interactive interfaces."
+                    quote="Vue is a progressive framework for building user interfaces."
+                    hashtags="vuejs,javascript,framework"
+                    twitter-user="vuejs"
+                    inline-template
                   >
                     <div class="footer-social-icons">
                       <!--
@@ -277,7 +310,7 @@
                                                           <i class="fa fa-pinterest"></i> Pinterest
                                                       </network>
                                                       <a href="#"><i class="fa fa-instagram"></i></a>
-                                                      <a href="#"><i class="fa fa-flickr"></i></a>-->
+                      <a href="#"><i class="fa fa-flickr"></i></a>-->
                       <!--                                <network network="email">-->
                       <!--                                    <i class="fa fa-envelope"></i>-->
                       <!--                                </network>-->
@@ -289,13 +322,13 @@
                       <!--                                </network>-->
                       <!--                                <network network="line">
                                                           <i class="fa fa-line"></i>
-                                                      </network>-->
+                      </network>-->
                       <!--                                <network network="linkedin">-->
                       <!--                                    <i class="fa fa-linkedin"></i>-->
                       <!--                                </network>-->
                       <!--                                <network network="odnoklassniki">
                                                           <i class="fa fa-odnoklassniki"></i> Odnoklassniki
-                                                      </network>-->
+                      </network>-->
                       <network network="pinterest">
                         <i class="fa fa-pinterest"></i>
                       </network>
@@ -310,16 +343,15 @@
                                                       </network>
                                                       <network network="weibo">
                                                           <i class="fa fa-weibo"></i> Weibo
-                                                      </network>-->
+                      </network>-->
                       <!--                                <network network="whatsapp">-->
                       <!--                                    <i class="fa fa-whatsapp"></i>-->
                       <!--                                </network>-->
                     </div>
                   </social-sharing>
 
-
                   <!--                        <a href="#"><img src="<?/*= img_base() */?>/payment.png" alt="Payment Method"/></a>-->
-                  <img style="    max-width: 137px;" src="~assets/img/layout/paypal-784404.svg" alt="">
+                  <img style="max-width: 137px;" src="~assets/img/layout/paypal-784404.svg" alt>
                 </div>
               </div>
             </div>
@@ -327,7 +359,6 @@
         </div>
       </div>
       <!-- Footer Follow Up Area End -->
-
       <!-- Footer Image Gallery Area Start -->
       <div class="footer-image-gallery">
         <div class="ruby-container">
@@ -336,22 +367,34 @@
               <div class="col-lg-12">
                 <div class="imgage-gallery-carousel owl-carousel">
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-1.jpg" alt="Gallery"/></a>
+                    <a href="#">
+                      <img src="~assets/img/gallery-img-1.jpg" alt="Gallery">
+                    </a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-2.jpg" alt="Gallery"/></a>
+                    <a href="#">
+                      <img src="~assets/img/gallery-img-2.jpg" alt="Gallery">
+                    </a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-3.jpg" alt="Gallery"/></a>
+                    <a href="#">
+                      <img src="~assets/img/gallery-img-3.jpg" alt="Gallery">
+                    </a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-4.jpg" alt="Gallery"/></a>
+                    <a href="#">
+                      <img src="~assets/img/gallery-img-4.jpg" alt="Gallery">
+                    </a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-3.jpg" alt="Gallery"/></a>
+                    <a href="#">
+                      <img src="~assets/img/gallery-img-3.jpg" alt="Gallery">
+                    </a>
                   </div>
                   <div class="gallery-item">
-                    <a href="#"><img src="~assets/img/gallery-img-2.jpg" alt="Gallery"/></a>
+                    <a href="#">
+                      <img src="~assets/img/gallery-img-2.jpg" alt="Gallery">
+                    </a>
                   </div>
                 </div>
               </div>
@@ -360,7 +403,6 @@
         </div>
       </div>
       <!-- Footer Image Gallery Area End -->
-
       <!-- Copyright Area Start -->
       <div class="copyright-area">
         <div class="ruby-container">
@@ -374,85 +416,37 @@
         </div>
       </div>
       <!-- Copyright Area End -->
-
     </footer>
     <!-- Footer Area End -->
-
     <!-- Scroll to Top Start -->
-    <a href="#" class="scrolltotop"><i class="fa fa-angle-up" /></a>
+    <a href="#" class="scrolltotop">
+      <i class="fa fa-angle-up"/>
+    </a>
+
     <!-- Scroll to Top End -->
     <QuickItemModal></QuickItemModal>
   </div>
 </template>
 
 <style lang="scss">
-    .breadcrumb-item{
-        text-transform: capitalize;
-        &.active{
-          color: white;
-        }
-    }
-  .breadcrumb-item + .breadcrumb-item::before{
-      content: none;
+.nuxt-progress{
+  z-index: 999999999999;
+  background-color: #4d94db;
+}
+.breadcrumb-item {
+  text-transform: capitalize;
+  &.active {
+    color: white;
   }
-  .breadcrumb li{
-     font-size: 1.5rem;
-  }
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  content: none;
+}
+.breadcrumb li {
+  font-size: 1.5rem;
+  font-style: initial;
+}
+
 </style>
-<script>
-  import QuickItemModal from '@/components/modals/QuickItemModal';
-  export default {
-      components:{
-          QuickItemModal
-      },
-      watch:{
-          '$route.fullPath' : {
-              handler: 'setBreadcrumbs',
-              deep: true,
-              immediate: true
-          }
-      },
-      methods:{
-          setBreadcrumbs(){
-              const nuxtRoute = this.$router.currentRoute;
-              let currentPath = nuxtRoute.path;
-              let paths = currentPath.match(/[^/].*[^/]/g);
+<script lang="ts" src="./default.ts"></script>
 
-              function setBreadCrumb(state,paths) {
-                  paths = Array.isArray(paths) && paths.length?paths[0].split("/"):[];
-
-                  let breadcrumbs = paths.reduce((breadcrumbArray, path, idx) => {
-                      breadcrumbArray.push({
-                          path: path,
-                          to: breadcrumbArray[idx - 1]
-                              ? "/" + breadcrumbArray[idx - 1].path + "/" + path
-                              : "/" + path,
-                          text:  path.replace('-',' '),
-                      });
-                      /*this.$route.matched[idx].meta.breadCrumb ||*/
-                      return breadcrumbArray;
-                  }, []);
-                  return breadcrumbs;
-              }
-              this.breadcrumbs = setBreadCrumb(nuxtRoute,paths);
-          }
-      },
-      created(){
-
-      },
-      computed: {
-          initialData () {debugger;
-              return this.$store.state.initialData;
-          },
-
-      },
-      mounted(){
-
-      },
-      data(){
-          return {
-              breadcrumbs:[]
-          }
-      }
-  }
-</script>
