@@ -1,21 +1,26 @@
 <template>
   <div
     class="single-input-item"
-    v-if="!parent || (parent && parentId == $parent.selects[mode + '_' + parent])"
+    v-if="showChildSelect"
   >
     <label :for="name" class="required" v-html="label"></label>
+    <!--       v-model="$parent.selects[name]"
+ -->
     <b-form-select
-      v-model="$parent.selects[name]"
       :options="options"
       size="sm"
       style="background-color: #f4f5f7;height: 55.63px;font-size: 1.4rem;padding-left: 15px;"
-      :name="name"
+      v-on="events"
+      v-bind="attrs"
     />
   </div>
 </template>
 
 <script>
 export default {
+  inheritAttrs: false,
+  inject: ["$validator"],
+
   props: {
     label: {},
     name: {},
@@ -36,8 +41,28 @@ export default {
   },
   methods: {},
   computed: {
+    showChildSelect(){
+        let {parent,parentId,parentModel} = this;
+        return !parent || (parent && parentId == parentModel);
+    },
     parentModel: function() {
-      return this.$parent["bill_" + this.parent];
+      return this.$parent.userData[this.mode+"_" + this.parent];
+    },
+    events() {
+      return {
+        ...this.$listeners
+      };
+    },
+    initialData() {
+      return this.$store.state.initialData;
+    },
+    listeners() {
+      const { input, ...listeners } = this.$listeners;
+      return listeners;
+    },
+    attrs() {
+      const { label, delay, mode, dref, ...attrs } = this.$attrs;
+      return attrs;
     }
   }
 };

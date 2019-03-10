@@ -63,12 +63,17 @@
               <div class="card">
                 <div>
                   <h3 v-b-toggle.shipping-and-billing variant="primary">Shipping Details</h3>
-                  <b-collapse :class="order_step" id="shipping-and-billing">
+                  <b-collapse id="shipping-and-billing" v-model="showShippingDetails" v-if="showShippingDetails">
                     <b-card>
                       <div class="checkout-billing-details-wrap">
                         <h2>Shipping Details</h2>
-                        <shipping-and-billing-form :inputs="inputs" :isBillSame="isBillSame" :selects="selects">
-                             <cart-summery :btn="'continue'" :mode="'shippingAndBilling'"></cart-summery>
+                        <shipping-and-billing-form
+                          :inputs="inputs"
+                          :same_shipping="same_shipping"
+                          :selects="selects"
+                          @submit="customerPost"
+                        >
+                          <cart-summery :btn="'continue'" :mode="'shippingAndBilling'"></cart-summery>
                         </shipping-and-billing-form>
                       </div>
                     </b-card>
@@ -81,14 +86,14 @@
               <div class="card">
                 <h3 v-b-toggle.payment-method>Payment Method</h3>
 
-                <b-collapse id="payment-method">
+                <b-collapse id="payment-method" v-model="showPaymentOptions" v-if="showPaymentOptions">
                   <div class="card-body">
                     <!-- Order Payment Method -->
                     <form
                       class="d-flex"
                       method="post"
-                      action="/cart/payment_post"
                       style="    height: fit-content;"
+                      @submit.prevent="paymentOptionPost"
                     >
                       <div class="order-payment-method col-md-8">
                         <div class="single-payment-method">
@@ -98,14 +103,14 @@
                                 type="radio"
                                 id="directbank"
                                 name="payment_option"
-                                value="1"
+                                value="ph"
                                 v-model="order.payment_method_id"
                                 class="custom-control-input"
                               >
                               <label class="custom-control-label" for="directbank">Phone Transfer</label>
                             </div>
                           </div>
-                          <div class="payment-method-details" data-method="1">
+                          <div class="payment-method-details" data-method="ph">
                             <p>
                               Make your payment directly into our bank account. Please use your Order ID as the
                               payment reference. Your order will not be shipped until the funds have cleared
@@ -121,7 +126,7 @@
                                 type="radio"
                                 id="paypalpayment"
                                 name="payment_option"
-                                value="2"
+                                value="pp"
                                 v-model="order.payment_method_id"
                                 class="custom-control-input"
                               >
@@ -135,7 +140,7 @@
                               </label>
                             </div>
                           </div>
-                          <div class="payment-method-details" data-method="2">
+                          <div class="payment-method-details" data-method="pp">
                             <p>
                               Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
                               account.
@@ -151,13 +156,14 @@
               <div class="card">
                 <h3 v-b-toggle.review-order>Review Order</h3>
 
-                <b-collapse id="review-order" data-parent="#checkOutAccordion" v-if="order_step == 'place_order'">
+                <b-collapse
+                  id="review-order"
+                  data-parent="#checkOutAccordion"
+                  v-model="showPlaceOrder" v-if="showPlaceOrder"
+                >
                   <form action="/cart/review_post" method="post" class="card-body d-flex">
                     <!-- Order Payment Method -->
-                    <div
-                      class="order-payment-method col-md-8"
-                      style="padding-top: 17px"
-                    >
+                    <div class="order-payment-method col-md-8" style="padding-top: 17px">
                       <div class="mt-2 mb-4">
                         <div class="container-fluid">
                           <div class="row">
@@ -243,9 +249,13 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <!-- <tr is="cart-row" v-for="orderItem in orderItems" :key="orderItem.id" :order-item="orderItem">
-                                                        <?php include VIEW_V3_DIR . '/layouts/components/cart-row.html.php' ?>
-                            </tr>-->
+                  <tr
+                  is="cart-row"
+                  v-for="orderItem in $store.state.initialData.orderItems"
+                  :key="orderItem.id"
+                  :order-item="orderItem"
+                ></tr>
+                            
                           </tbody>
                         </table>
                       </div>
@@ -266,19 +276,63 @@
 <script>
 import ShippingAndBillingForm from "~/components/forms/ShippingAndBillingForm";
 import CartSummery from "~/components/CartSummery";
+import CartRow from "~/components/CartRow";
 export default {
   components: {
+    CartRow,
     ShippingAndBillingForm,
     CartSummery
   },
   computed: {
     initialData() {
       return this.$store.state.initialData;
+    },
+    showShippingDetails: {
+      get() {
+        return !this.orderSteps.shippingDetails;
+      },
+      set(oldVal,newVal) {
+         /*  debugger;
+          this.orderSteps.shippingDetails = oldVal; */
+          return oldVal;
+      }
+    },
+    showPaymentOptions: {
+      get() {
+        return (
+          !this.orderSteps.paymentOptions && this.orderSteps.shippingDetails
+        );
+      },
+      set() {}
+    },
+    showPlaceOrder: {
+      get() {
+        return (
+          !this.orderSteps.placeOrder &&
+          this.orderSteps.paymentOptions &&
+          this.orderSteps.shippingDetails
+        );
+      },
+      set() {}
     }
   },
   async asyncData({ $axios }) {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     return await $axios.$get("/api/cart/one_page_checkout.json", {});
+  },
+  methods: {
+    async customerPost(e) {
+      let result = await this.$store.$axios.$post("/api/cart/one_page_checkout_post", {...this.userData,same_shipping:this.same_shipping});
+      if(result){
+            this.orderSteps = result.orderSteps;
+      }
+    },
+    async paymentOptionPost(e) {
+      let result = await this.$store.$axios.$post("/api/cart/payment_post", new FormData(e.target));
+      debugger;
+      if(result){
+            this.orderSteps = result.orderSteps;
+      }
+    }
   }
 };
 </script>

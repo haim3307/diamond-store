@@ -32,10 +32,15 @@ VeeValidate.Validator.extend('email_exists', {
 
 
 const formHelpers = {
-    onSubmit (self,e) {
+    onSubmit (self,e,immidate = true) {
         self.$validator.validateAll().then( result => {
             if (!self.errors.any()) {
-                e.target.submit();
+                if(immidate){
+                    e.target.submit();
+                }
+                else{
+                    self.$emit('submit',e);
+                }
             }
             else {
                 for (let inputIndex in self.fields) self.$validator.flag(inputIndex, {touched: true});
