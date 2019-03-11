@@ -63,7 +63,11 @@
               <div class="card">
                 <div>
                   <h3 v-b-toggle.shipping-and-billing variant="primary">Shipping Details</h3>
-                  <b-collapse id="shipping-and-billing" v-model="showShippingDetails" v-if="showShippingDetails">
+                  <b-collapse
+                    id="shipping-and-billing"
+                    v-model="showShippingDetails"
+                    v-if="showShippingDetails"
+                  >
                     <b-card>
                       <div class="checkout-billing-details-wrap">
                         <h2>Shipping Details</h2>
@@ -86,7 +90,11 @@
               <div class="card">
                 <h3 v-b-toggle.payment-method>Payment Method</h3>
 
-                <b-collapse id="payment-method" v-model="showPaymentOptions" v-if="showPaymentOptions">
+                <b-collapse
+                  id="payment-method"
+                  v-model="showPaymentOptions"
+                  v-if="showPaymentOptions"
+                >
                   <div class="card-body">
                     <!-- Order Payment Method -->
                     <form
@@ -159,15 +167,16 @@
                 <b-collapse
                   id="review-order"
                   data-parent="#checkOutAccordion"
-                  v-model="showPlaceOrder" v-if="showPlaceOrder"
+                  v-model="showPlaceOrder"
+                  v-if="showPlaceOrder"
                 >
-                  <form action="/cart/review_post" method="post" class="card-body d-flex">
+                  <form @submit.prevent="placeOrderPost" method="post" class="card-body d-flex">
                     <!-- Order Payment Method -->
                     <div class="order-payment-method col-md-8" style="padding-top: 17px">
                       <div class="mt-2 mb-4">
                         <div class="container-fluid">
                           <div class="row">
-                            <div class="summery-section p-3 ship-to col-md-6">
+                            <div class="summery-section p-3 ship-to col-md-4">
                               <div class="info-title-wrap">
                                 <div class="title uppercase">
                                   <!-- <?/*= text('ship-to-title') */?> -->
@@ -175,18 +184,15 @@
                                 </div>
                               </div>
                               <div class="content-wrap">
-                                <div class="name">
-                                  <!-- <?= $this->order->ship_first_name ?> <?= $this->order->ship_last_name ?> -->
-                                </div>
+                                <div class="name">{{order.ship_first_name}} {{order.ship_last_name}}</div>
                                 <div class="street">
                                   <!-- <?= $this->order->ship_address ?> -->
+                                  {{order.ship_address}}
                                 </div>
-                                <div class="zip-code">
-                                  <!-- <?= $this->order->ship_city ?>, <?= $this->order->ship_state->name ?> <?= $this->order->ship_zipcode ?> -->
-                                </div>
-                                <div class>
-                                  <!-- <?= $this->order->ship_country->name ?> -->
-                                </div>
+                                <div
+                                  class="zip-code"
+                                >{{order.ship_city}}, {{order.ship_state?order.ship_state.name:''}} {{order.ship_zipcode}}</div>
+                                <div class>{{order.ship_country.name}}</div>
                               </div>
                               <div class="edit-det uppercase">
                                 <!-- <? if($this->order->payment_method->id != 5): ?>
@@ -194,21 +200,31 @@
                                 <? endif ?>-->
                               </div>
                             </div>
-                            <div class="summery-section ship-to col-md-3">
+                            <div class="summery-section p-3 ship-to col-md-4">
                               <div class="info-title-wrap">
                                 <div class="title uppercase">
                                   <!-- <?/*= text('bill-to-title') */?> -->
                                   Billing Address:
                                 </div>
                               </div>
-                              <div class="content-wrap"></div>
+                              <div class="content-wrap">
+                                <div class="name">{{order.bill_first_name}} {{order.bill_last_name}}</div>
+                                <div class="street">
+                                  <!-- <?= $this->order->ship_address ?> -->
+                                  {{order.bill_address}}
+                                </div>
+                                <div
+                                  class="zip-code"
+                                >{{order.bill_city}}, {{order.bill_state?order.bill_state.name:''}} {{order.bill_zipcode}}</div>
+                                <!-- <div class>{{order.bill_country.name}}</div> -->
+                              </div>
                               <div class="edit-det uppercase">
                                 <!-- <?/* if($this->order->payment_method->id != 5): */?>
                                                                     <a href="<?/*= seo('/cart/customer', 'ssl')*/?>" class="edit" ><?/*= text('w-edit')*/?></a>
                                 <?/* endif */?>-->
                               </div>
                             </div>
-                            <div class="summery-section p-3 ship-to col-md-6">
+                            <div class="summery-section p-3 ship-to col-md-4">
                               <div class="info-title-wrap">
                                 <div class="title uppercase">
                                   <!-- <?/*= text('payment-type-title') */?> -->
@@ -219,6 +235,7 @@
                                 <div class="card-number">
                                   <span class="type uppercase">
                                     <!-- <?= text('pay-method-' . ($this->order->payment_method->id??1)) ?> -->
+                                    {{order.payment_method.code == 'ph'?'Phone Order':'Paypal'}}
                                   </span>
                                   <!-- <?php if (null !== ($cc_details = $this->order->cc_details())): ?>
                                                                         <span class="number">
@@ -249,13 +266,12 @@
                             </tr>
                           </thead>
                           <tbody>
-                  <tr
-                  is="cart-row"
-                  v-for="orderItem in $store.state.initialData.orderItems"
-                  :key="orderItem.id"
-                  :order-item="orderItem"
-                ></tr>
-                            
+                            <tr
+                              is="cart-row"
+                              v-for="orderItem in $store.state.initialData.orderItems"
+                              :key="orderItem.id"
+                              :order-item="orderItem"
+                            ></tr>
                           </tbody>
                         </table>
                       </div>
@@ -278,6 +294,17 @@ import ShippingAndBillingForm from "~/components/forms/ShippingAndBillingForm";
 import CartSummery from "~/components/CartSummery";
 import CartRow from "~/components/CartRow";
 export default {
+  scrollToTop: true,
+  data() {
+    return {
+      orderSteps: {
+        shippingDetails: false,
+        paymentOptions: false,
+        placeOrder: false
+      }
+    };
+  },
+
   components: {
     CartRow,
     ShippingAndBillingForm,
@@ -289,12 +316,14 @@ export default {
     },
     showShippingDetails: {
       get() {
+        debugger;
+
         return !this.orderSteps.shippingDetails;
       },
-      set(oldVal,newVal) {
-         /*  debugger;
+      set(oldVal, newVal) {
+        /*  debugger;
           this.orderSteps.shippingDetails = oldVal; */
-          return oldVal;
+        return oldVal;
       }
     },
     showPaymentOptions: {
@@ -316,21 +345,44 @@ export default {
       set() {}
     }
   },
-  async asyncData({ $axios }) {
-    return await $axios.$get("/api/cart/one_page_checkout.json", {});
+  async asyncData({ $axios, redirect }) {
+    let data = await $axios.$get("/api/cart/one_page_checkout.json", {});
+    if (!data) redirect(301, "/cart");
+    return data;
   },
   methods: {
     async customerPost(e) {
-      let result = await this.$store.$axios.$post("/api/cart/one_page_checkout_post", {...this.userData,same_shipping:this.same_shipping});
-      if(result){
-            this.orderSteps = result.orderSteps;
+      let result = await this.$store.$axios.$post(
+        "/api/cart/one_page_checkout_post",
+        { ...this.userData, same_shipping: this.same_shipping }
+      );
+      if (result) {
+        this.orderSteps.shippingDetails = result.orderSteps.shippingDetails;
+        this.orderSteps.paymentOptions = result.orderSteps.paymentOptions;
+        this.orderSteps.placeOrder = result.orderSteps.placeOrder;
       }
     },
     async paymentOptionPost(e) {
-      let result = await this.$store.$axios.$post("/api/cart/payment_post", new FormData(e.target));
+      let result = await this.$store.$axios.$post(
+        "/api/cart/payment_post",
+        new FormData(e.target)
+      );
       debugger;
-      if(result){
-            this.orderSteps = result.orderSteps;
+      if (result) {
+        this.orderSteps.shippingDetails = result.orderSteps.shippingDetails;
+        this.orderSteps.paymentOptions = result.orderSteps.paymentOptions;
+        this.orderSteps.placeOrder = result.orderSteps.placeOrder;
+        this.$router.push("/checkout");
+      }
+    },
+    async placeOrderPost(e) {
+      let result = await this.$store.$axios.$post("/api/cart/review_post");
+      debugger;
+
+      if (result) {
+        debugger;
+        this.initialData.orderItems = [];
+        await this.$router.push("/thank-you");
       }
     }
   }

@@ -201,13 +201,13 @@
       </div>
     </div>
     <!--== Search Box Area End ==-->
-    <!--
+    
     <nuxt :key="$router.fullPath"/>
-    -->
+   
     <!--    <pre>
         {{$router.currentRoute.name}}
     </pre>-->
-    <router-view :key="$route.fullPath"></router-view>
+<!--     <router-view :key="$route.fullPath"></router-view> -->
 
     <!-- Footer Area Start -->
     <footer id="footer-area">

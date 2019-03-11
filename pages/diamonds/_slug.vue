@@ -99,7 +99,7 @@
 
           </p>-->
           <div class="product-quantity mt-5 d-flex align-items-center cta-button">
-            <a href="#" class="btn btn-add-to-cart" @click.prevent="$root.addToCart(product)">
+            <a href="#" class="btn btn-add-to-cart" @click.prevent="addToCart(product)">
               <i class="fa fa-cart-plus pr-1" aria-hidden="true"></i>
               Add to Cart
             </a>
@@ -134,6 +134,12 @@ export default {
     let data = await $axios.$get(`/api/products/product/${params.slug}`);
     //console.log(data);
     return data;
+  },
+  methods:{
+    addToCart(product) {
+        this.$store.dispatch('saveToCart',product);
+        this.$router.push('/cart');
+    },
   }
 };
 </script>
