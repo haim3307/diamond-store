@@ -1,37 +1,46 @@
 <template>
   <span
     class="alert alert-danger"
-    v-show="field && field.touched && !field.valid"
-    style="display: none;"
-    v-html="msg"
-  ></span>
+    v-show="msg && field && field.touched && !field.valid"
+  >{{msg|msgFilter}}</span>
 </template>
 
 <script>
 export default {
-  inject: ["$validator"],
+  inject: { $validator: "$validator", formScope: "formScope" },
   props: {
     mode: { default: "" },
+    name: {},
+    msg: {}
   },
   computed: {
+    formFields() {
+      return this.fields["$" + this.formScope]
+        ? this.fields["$" + this.formScope]
+        : {};
+    },
     field() {
-      return this.fields[this.attrs.name];
+      return this.formFields[this.name];
     },
-    attrs() {
-      return this.$parent.attrs;
-    },
-    errors() {
-      return this.$parent.errors;
-    },
-    msg(){
-        return (this.errors.first(this.name) || '').replace('bill_','').replace('ship_','').replace('_',' ');
-    },
-    name(){
-        return this.attrs.name;
+    formErrors() {
+      return this.$validator.errors;
+    }
+  },
+  filters: {
+    msgFilter(value) {
+      return value
+        ? value
+            .replace("bill_", "")
+            .replace("ship_", "")
+            .replace("_", " ")
+        : "";
     }
   }
 };
 </script>
 
 <style>
+.alert {
+  width: fit-content;
+}
 </style>

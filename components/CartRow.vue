@@ -1,15 +1,15 @@
 <template>
     <tr>
         <td class="pro-thumbnail">
-            <a :href="orderItem.url">
+            <nuxt-link to="orderItem.url">
                 <img class="img-fluid" :src="orderItem.img" alt="Product"/>
-            </a>
+            </nuxt-link>
         </td>
         <td class="pro-title">
 
             <div class="d-flex justify-content-between align-items-center" :class="DescTabState == 'open'?'pb-5 pt-5':'pb-3'" style="cursor: pointer;">
                 <div class="col-md-1"></div>
-                <nuxt-link :to="orderItem.url" class="col d-block text-center text-capitalize" v-html="orderItem.title + ' ( Clarity: ' + orderItem.clarity + ' , Polish: ' + orderItem.polish + ' , color: ' + orderItem.color + ' )'">
+                <nuxt-link :to="(typeof orderItem.url == 'string'?orderItem.url:'/')" class="col d-block text-center text-capitalize" v-html="orderItem.title + ' ( Clarity: ' + orderItem.clarity + ' , Polish: ' + orderItem.polish + ' , color: ' + orderItem.color + ' )'">
 
                 </nuxt-link>
                 <!--                                            <hr class="animated fadeIn" v-show="DescTabState != 'open'">
@@ -29,13 +29,13 @@
                                         <div class="pro-qty"><input type="text" value="1"></div>
                                     </td>
                                     <td class="pro-subtotal"><span>$295.00</span></td>-->
-        <td class="pro-remove"><a :href="'/api/cart/' + orderItem.productOrderId + '/remove?redirect=cart/index'"><i class="fa fa-trash-o"></i></a></td>
+        <td class="pro-remove" v-if="!orderMode"><!--<a :href="'/api/cart/' + orderItem.productOrderId + '/remove?redirect=cart/index'"><i class="fa fa-trash-o"></i></a>--></td>
     </tr>
 </template>
 
 <script>
 export default {
-    props: ['orderItem'],
+    props: {'orderItem':{},'orderMode':{default:false}},
     created(){
     },
     mounted(){

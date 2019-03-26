@@ -61,7 +61,7 @@
                   </tr>
                   <tr>
                     <td>Total</td>
-                    <td class="total-amount">${{order.total_price}}</td>
+                    <td class="total-amount" v-html="order.total_price"></td>
                   </tr>
                 </table>
               </div>
@@ -98,5 +98,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+    @import '~assets/scss/pages/page-imports';
+    @import '~assets/scss/pages/cart';
 </style>

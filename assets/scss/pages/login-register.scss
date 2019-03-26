@@ -1,13 +1,13 @@
+@import "page-imports";
 /*== Login & Register Content Start ==*/
 .login-register-wrapper {
-  margin-top: -5px;
   .login-reg-tab-menu {
     @include justify-content(center);
-    a {
+    a{
       @include font-size(22);
       @include font-weight(700);
       color: $black-soft;
-      font-family: $font-droid-sarif;
+      font-family: $font-montserrat;
       margin-right: 50px;
       position: relative;
 
@@ -28,7 +28,7 @@
         }
       }
 
-      &.active {
+      &.nuxt-link-active {
         color: $brand-color;
       }
     }
@@ -53,7 +53,7 @@
   }
 }
 
-.single-input-item {
+/* .single-input-item {
   margin-top: 20px;
   label {
     color: $black-soft;
@@ -112,7 +112,8 @@
       padding: 10px 30px;
     }
   }
-}
+} */
+
 
 // Fieldset Sty;
 fieldset {

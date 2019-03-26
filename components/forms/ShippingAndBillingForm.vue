@@ -1,11 +1,10 @@
 <template>
   <form
-    action
     ref="billingAndShippingForm"
     @submit.prevent="onSubmit($event)"
     novalidate
-    method="post"
     id="billingAndShippingForm"
+    data-vv-scope="ship_bill_form"
   >
     <div class="row">
       <div class="billing-form-wrap col-lg-8">
@@ -21,8 +20,6 @@
               :name="'ship_'+inputKey"
               :validate="inputVal.validate"
               :mode="'ship'"
-              @input="userData['ship_'+inputKey] = $event.target.value"
-              :value="userData['ship_'+inputKey]"
             ></single-input-item>
           </div>
           <div class="col-md-6">
@@ -33,8 +30,6 @@
               validate="required|email|email_exists"
               mode
               :delay="1000"
-              @input="userData['email'] = $event.target.value"
-              :value="userData['email']"
             ></single-input-item>
           </div>
           <!-- {{JSON.stringify(userData)}} -->
@@ -50,8 +45,6 @@
               :parent="selectVal.parent"
               :parent-id="selectVal.parent_id"
               :mode="'ship'"
-              @change="onSelectChange($event,'ship',selectKey)"
-              :value="userData['ship_'+selectKey]"
             ></single-select-item>
           </div>
           <div class="checkout-box-wrap col-12" v-if="!initialData.is_logged_in">
@@ -67,8 +60,8 @@
                 <label class="custom-control-label" for="create_pwd">Create an account?</label>
               </div>
             </div>
-            <div class="account-create single-form-row">
-              <p>
+            <div class="account-create single-form-row row">
+              <p class="col-md-12">
                 Create an account by entering the information below. If you are a returning
                 customer please login at the top of the page.
               </p>
@@ -86,8 +79,7 @@
           </div>
           <div class="checkout-box-wrap col-12">
             <div class="single-input-item">
-              <div class="custom-control custom-checkbox"><!--                   @change="differentAddress($event)"
- -->
+              <div class="custom-control custom-checkbox">
                 <input
                   type="checkbox"
                   class="custom-control-input"
@@ -101,7 +93,7 @@
                 >Billing Address is the same as shipping?</label>
               </div>
             </div>
-            <div class="ship-to-different single-form-row" v-if="!same_shipping">
+            <div class="ship-to-different single-form-row" v-if="!source.same_shipping">
               <div class="row">
                 <div
                   class="col-md-6"
@@ -113,8 +105,6 @@
                     :name="'bill_'+inputKey"
                     :validate="inputVal.validate"
                     :mode="'bill'"
-                    @input="userData['bill_'+inputKey] = $event.target.value"
-                    :value="userData['bill_'+inputKey]"
                   ></single-input-item>
                 </div>
                 <div
@@ -129,38 +119,37 @@
                     :parent="selectVal.parent"
                     :parent-id="selectVal.parent_id"
                     :mode="'bill'"
-                    @change="onSelectChange($event,'bill',selectKey)"
-                    :value="userData['bill_'+selectKey]"
                   ></single-select-item>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="single-input-item col-12">
             <div class="custom-control custom-checkbox" v-if="!initialData.is_logged_in">
               <input
                 type="checkbox"
                 class="custom-control-input"
                 id="terms"
                 name="checkout_agree_checkBox"
-                v-validate="'required'"
+                v-validate.immediate
+                ref="checkout_agree_checkBox"
+                required="true"
+                v-model="source.checkout_agree_checkBox"
               >
               
               <label
                 class="custom-control-label"
-                :class="{'text-danger':errors.first('checkout_agree_checkBox')}"
+                :class="{'text-danger':agree_touched && errors.has('checkout_agree_checkBox','ship_bill_form') }"
+                @click="agree_touched = true"
                 for="terms"
               >
                 I have read and agree to the website
                 <a
-                  href="#"
-                  :class="{'text-danger':errors.first('checkout_agree_checkBox')}"
+                  href="#" style="color:blue"
                 >terms and conditions.</a>
                 <span class="text-danger">*</span>
               </label>
             </div>
           </div>
+
           <!--                                                <div class="single-input-item col-md-6">
                                                                                                                         <label for="ordernote">Order Note</label>
                                                                                                                         <textarea name="ordernote" id="ordernote" cols="30" rows="1"
@@ -179,26 +168,34 @@ import SingleSelectItem from "~/components/forms/SingleSelectItem";
 import { debug } from "util";
 
 export default {
-  props: ["inputs", "same_shipping", "selects"],
+  inject: ["$validator",'source'],
+  data(){
+      return {
+        create_pwd:false,
+        agree_touched:false
+      };
+  },
+  provide() {
+    return {
+      formScope: "ship_bill_form"
+    };
+  },
+  props: ["inputs"],
+  mounted(){debugger;this.$refs},
   components: { SingleInputItem, SingleSelectItem },
   computed: {
     initialData() {
       return this.$store.state.initialData;
-    },
-    userData() {
-      return this.$parent.$parent.userData;
-    },
-    source(){
-        return this.$parent.$parent;
     }
   },
   methods: {
     onSubmit(e) {
       debugger;
+      this.agree_touched = true;
       this.forms.onSubmit(this, e, false);
     },
     onSelectChange(e, mode = "ship", selectKey) {
-      this.userData[`${mode}_${selectKey}`] = e;
+      this.source[`${mode}_${selectKey}`] = e;
     }
   }
 };

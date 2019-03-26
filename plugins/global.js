@@ -32,9 +32,11 @@ VeeValidate.Validator.extend('email_exists', {
 
 
 const formHelpers = {
-    onSubmit (self,e,immidate = true) {
-        self.$validator.validateAll().then( result => {
-            if (!self.errors.any()) {
+    onSubmit (self,e,immidate = true) 
+    {   const scope = e.target.dataset.vvScope;debugger;
+        self.$validator.validateAll().then( result => {                debugger;
+          if (!self.errors.any(scope)) {
+                debugger;
                 if(immidate){
                     e.target.submit();
                 }
@@ -43,7 +45,10 @@ const formHelpers = {
                 }
             }
             else {
-                for (let inputIndex in self.fields) self.$validator.flag(inputIndex, {touched: true});
+                for (let inputIndex in self.fields['$' + scope]) 
+                {debugger;
+                    self.$validator.flag(`${scope}.${inputIndex}`, {touched: true});
+                }
             }
         });
     }
@@ -54,7 +59,7 @@ const formService = {
         Vue.forms = formHelpers;
         Vue.prototype.forms = formHelpers;
     }
-}
+};
 
 Vue.use(formService);
 /*

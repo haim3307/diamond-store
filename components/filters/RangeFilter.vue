@@ -17,8 +17,8 @@
             <div v-if="title == 'price' || title == 'carat'">
                 <div style="display:none;" class="editRange">
                     <div class="d-flex justify-content-between mt-3 mb-3">
-                        <input class="text-center" type="number" v-model.number="query[0]" @change="updateRange('from',0)" @keyup.enter="handleKeyUp()" :min="rangeSlider.minValue" :max="rangeSlider.maxValue" style="border-radius: 22px;font-size: 11px;">
-                        <input class="text-center" type="number" v-model.number="query[1]" @change="updateRange('to',1)" @keyup.enter="handleKeyUp()" :min="rangeSlider.minValue" :max="rangeSlider.maxValue" style="border-radius: 22px;font-size: 11px;">
+                        <input class="text-center" type="number" v-model.number="query[0]" @change="updateRange('from',0,$event)" @keyup.enter="handleKeyUp()" :min="rangeSlider.minValue" :max="rangeSlider.maxValue" style="border-radius: 22px;font-size: 11px;">
+                        <input class="text-center" type="number" v-model.number="query[1]" @change="updateRange('to',1,$event)" @keyup.enter="handleKeyUp()" :min="rangeSlider.minValue" :max="rangeSlider.maxValue" style="border-radius: 22px;font-size: 11px;">
                     </div>
                 </div>
             </div>
@@ -34,11 +34,9 @@
     export default {
         props: ['query', 'title','filter'],
         created: function created() {
-            var _this = this;
-
-            this.$parent.$on('togglefilter', function (e) {
-                return _this.toggleFilter(e);
-            });
+            this.$parent.$on('togglefilter',  (e) =>
+                this.toggleFilter(e)
+            );
         },
 
         data: function data() {
@@ -64,14 +62,29 @@
                     $el.slideDown();
                 }
             },
-            updateRange (dir,index)
+            updateRange (dir,index,e)
             {
                 let update = {
-                    [dir] : this.query[index]
+                    [dir+'_pretty'] : this.query[index]
                 };
-                $('.'+this.title+'-range-slider').data('ionRangeSlider').update(update);
+                let {minValue,maxValue} = this.rangeSlider;
+                let $el = $('.'+this.title+'-range-slider').data('ionRangeSlider'),value=this.query[index];
+
+              var minPos = this.rangeSlider.min_pos || 0,
+                maxPos = this.rangeSlider.max_pos || 100;
+
+              var minLog = Math.log($el.result.min),
+                maxLog = Math.log($el.result.max);
+
+              // calculate adjustment factor
+              var scale = (maxLog-minLog) / (maxPos-minPos);
+
+              //let test = Math.exp((position - this.minpos) * this.scale + this.minlval);
+              let to_pretty = minPos + (Math.log(value) - minValue) / scale;debugger;
+              $el.update({to_pretty});
             },
-            handleKeyUp: function handleKeyUp(data) {
+            handleKeyUp(data)
+            {debugger;this;
                 var searchParams = this.source.queryParams.q;
 
                 var fromQueryString = this.title in searchParams ? searchParams[this.title].split('-') : false;
@@ -80,6 +93,11 @@
                     this.source.loadGalleryData(this.title, this.query[0] + '-' + this.query[1]);
                 }
             }
+        },
+        computed:{
+          min(){
+
+          }
         }
     }
 </script>

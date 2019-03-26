@@ -34,7 +34,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { color: '#4d94db' },
 
   /*
   ** Global CSS
@@ -50,7 +50,8 @@ module.exports = {
       { src: "~/plugins/axios.js" },
       { src: "~/plugins/global.js" },
       { src: "~/plugins/injectDataFromServer.js" },
-      { src: "~plugins/ion-range-slider.js", ssr: false}
+      { src: "~plugins/ion-range-slider.js", ssr: false},
+      '~/plugins/vue2-filters'
 
   ],
   /*
@@ -67,7 +68,10 @@ module.exports = {
       ['nuxt-validate', {
         lang: 'en',
         // regular vee-validate options 
-      }]
+        inject:false
+      }],
+    '@nuxtjs/moment'
+
   ],
   typescript: {
     formatter: "default"

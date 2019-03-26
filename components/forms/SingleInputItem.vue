@@ -10,24 +10,31 @@
           placeholder=" "
           v-validate.immediate="validate"
           :data-vv-as="attrs.name"
+          v-model="source[attrs.name]"
         >
       </slot>
-      <span class="label" v-html="label">Label</span>
+      <span class="label text-capitalize" v-html="label">Label</span>
       <span class="border"></span>
     </label>
     <slot name="error">
-        <ErrorMsg  style="    position: absolute;
-        bottom: -16px;
-    font-size: 12px;
-"></ErrorMsg>  
+      <ErrorMsg
+        :name="attrs.name"
+        style="    position: absolute;
+                      bottom: -16px;
+                  font-size: 12px;
+              "
+        :msg="$validator.errors.first(attrs.name,this.formScope)"      
+      ></ErrorMsg>
+      
     </slot>
   </div>
 </template>
 
 <script>
-import ErrorMsg from './ErrorMsg.vue';
+import ErrorMsg from "./ErrorMsg.vue";
 export default {
-  components:{
+  inject: { $validator: '$validator',formScope:'formScope' ,source:'source'},
+  components: {
     ErrorMsg
   },
   created() {},
@@ -36,15 +43,14 @@ export default {
     delay: { default: 0 },
     mode: { default: "" },
     validate: {},
-    dref: {},
-    
+    dref: {}
+
+
     /*    
     type: { default: "text" },
      */
   },
   inheritAttrs: false,
-
-  inject: ["$validator"],
 
   mounted: function() {
     /*     this.$parent.$refs[this.attrs.name] = this.$refs.input;
@@ -75,10 +81,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.single-input-item{
-    margin-top: 23px;
-    margin-bottom: 28px;
-
+.single-input-item {
+  margin-top: 23px;
+  margin-bottom: 28px;
 }
 
 .inp {
@@ -134,7 +139,8 @@ export default {
   background: none;
   outline: none;
 }
-.inp input:focus + span,input:-webkit-autofill + span {
+.inp input:focus + span,
+input:-webkit-autofill + span {
   color: #07f;
   transform: translateY(-26px) scale(0.75);
 }

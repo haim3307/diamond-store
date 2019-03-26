@@ -73,8 +73,6 @@
                         <h2>Shipping Details</h2>
                         <shipping-and-billing-form
                           :inputs="inputs"
-                          :same_shipping="same_shipping"
-                          :selects="selects"
                           @submit="customerPost"
                         >
                           <cart-summery :btn="'continue'" :mode="'shippingAndBilling'"></cart-summery>
@@ -97,67 +95,69 @@
                 >
                   <div class="card-body">
                     <!-- Order Payment Method -->
-                    <form
-                      class="d-flex"
-                      method="post"
-                      style="    height: fit-content;"
-                      @submit.prevent="paymentOptionPost"
-                    >
-                      <div class="order-payment-method col-md-8">
-                        <div class="single-payment-method">
-                          <div class="payment-method-name">
-                            <div class="custom-control custom-radio">
-                              <input
-                                type="radio"
-                                id="directbank"
-                                name="payment_option"
-                                value="ph"
-                                v-model="order.payment_method_id"
-                                class="custom-control-input"
-                              >
-                              <label class="custom-control-label" for="directbank">Phone Transfer</label>
-                            </div>
-                          </div>
-                          <div class="payment-method-details" data-method="ph">
-                            <p>
-                              Make your payment directly into our bank account. Please use your Order ID as the
-                              payment reference. Your order will not be shipped until the funds have cleared
-                              in our account..
-                            </p>
-                          </div>
-                        </div>
-
-                        <div class="single-payment-method">
-                          <div class="payment-method-name">
-                            <div class="custom-control custom-radio">
-                              <input
-                                type="radio"
-                                id="paypalpayment"
-                                name="payment_option"
-                                value="pp"
-                                v-model="order.payment_method_id"
-                                class="custom-control-input"
-                              >
-                              <label class="custom-control-label" for="paypalpayment">
-                                Paypal
-                                <img
-                                  src="~assets/img/layout/paypal-784404.svg"
-                                  class="img-fluid paypal-card"
-                                  alt
+                    <div class="container-fluid">
+                      <form
+                        class="row"
+                        method="post"
+                        style="    height: fit-content;"
+                        @submit.prevent="paymentOptionPost"
+                      >
+                        <div class="order-payment-method col-lg-8">
+                          <div class="single-payment-method">
+                            <div class="payment-method-name">
+                              <div class="custom-control custom-radio">
+                                <input
+                                  type="radio"
+                                  id="directbank"
+                                  name="payment_option"
+                                  value="ph"
+                                  class="custom-control-input"
+                                  :checked="!order.payment_method.code || order.payment_method.code == 'ph'"
                                 >
-                              </label>
+                                <label class="custom-control-label" for="directbank">Phone Transfer</label>
+                              </div>
+                            </div>
+                            <div class="payment-method-details" data-method="ph">
+                              <p>
+                                Make your payment directly into our bank account. Please use your Order ID as the
+                                payment reference. Your order will not be shipped until the funds have cleared
+                                in our account..
+                              </p>
                             </div>
                           </div>
-                          <div class="payment-method-details" data-method="pp">
-                            <p>
-                              Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
-                              account.
-                            </p>
+
+                          <div class="single-payment-method">
+                            <div class="payment-method-name">
+                              <div class="custom-control custom-radio">
+                                <input
+                                  type="radio"
+                                  id="paypalpayment"
+                                  name="payment_option"
+                                  value="pp"
+                                  class="custom-control-input"
+                                  :checked="order.payment_method.code == 'pp'"
+                                >
+                                <label class="custom-control-label" for="paypalpayment">
+                                  Paypal
+                                  <img
+                                    src="~assets/img/layout/paypal-784404.svg"
+                                    class="img-fluid paypal-card"
+                                    alt
+                                  >
+                                </label>
+                              </div>
+                            </div>
+                            <div class="payment-method-details" data-method="pp">
+                              <p>
+                                Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
+                                account.
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <cart-summery class="col-md-4" :btn="'continue'" :mode="'paymentMethod'"></cart-summery>
-                    </form>
+                        <cart-summery class="col-lg-4" :btn="'continue'" :mode="'paymentMethod'"></cart-summery>
+                      </form>
+                    </div>
                   </div>
                 </b-collapse>
               </div>
@@ -216,7 +216,7 @@
                                 <div
                                   class="zip-code"
                                 >{{order.bill_city}}, {{order.bill_state?order.bill_state.name:''}} {{order.bill_zipcode}}</div>
-                                <!-- <div class>{{order.bill_country.name}}</div> -->
+                                <div class>{{order.bill_country.name}}</div>
                               </div>
                               <div class="edit-det uppercase">
                                 <!-- <?/* if($this->order->payment_method->id != 5): */?>
@@ -235,7 +235,7 @@
                                 <div class="card-number">
                                   <span class="type uppercase">
                                     <!-- <?= text('pay-method-' . ($this->order->payment_method->id??1)) ?> -->
-                                    {{order.payment_method.code == 'ph'?'Phone Order':'Paypal'}}
+                                    {{order.payment_method.code == 'ph' || !order.payment_method.code ?'Phone Order':'Paypal'}}
                                   </span>
                                   <!-- <?php if (null !== ($cc_details = $this->order->cc_details())): ?>
                                                                         <span class="number">
@@ -262,15 +262,15 @@
                               <th class="pro-price">Price</th>
                               <!--                            <th class="pro-quantity">Quantity</th>
                               <th class="pro-subtotal">Total</th>-->
-                              <th class="pro-remove">Remove</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr
                               is="cart-row"
-                              v-for="orderItem in $store.state.initialData.orderItems"
+                              v-for="orderItem in initialData.orderItems"
                               :key="orderItem.id"
                               :order-item="orderItem"
+                              :orderMode="true"
                             ></tr>
                           </tbody>
                         </table>
@@ -295,6 +295,11 @@ import CartSummery from "~/components/CartSummery";
 import CartRow from "~/components/CartRow";
 export default {
   scrollToTop: true,
+  provide(){
+    return {
+      source:this.userData
+    }
+  },
   data() {
     return {
       orderSteps: {
@@ -320,10 +325,9 @@ export default {
 
         return !this.orderSteps.shippingDetails;
       },
-      set(oldVal, newVal) {
+      set(newVal) {
         /*  debugger;
           this.orderSteps.shippingDetails = oldVal; */
-        return oldVal;
       }
     },
     showPaymentOptions: {
@@ -342,7 +346,9 @@ export default {
           this.orderSteps.shippingDetails
         );
       },
-      set() {}
+      set(newVal) {
+        debugger;
+      }
     }
   },
   async asyncData({ $axios, redirect }) {
@@ -352,14 +358,18 @@ export default {
   },
   methods: {
     async customerPost(e) {
+      debugger;
       let result = await this.$store.$axios.$post(
         "/api/cart/one_page_checkout_post",
-        { ...this.userData, same_shipping: this.same_shipping }
+        { ...this.userData, same_shipping: this.userData.same_shipping }
       );
-      if (result) {
+      if (result) {debugger;
         this.orderSteps.shippingDetails = result.orderSteps.shippingDetails;
         this.orderSteps.paymentOptions = result.orderSteps.paymentOptions;
         this.orderSteps.placeOrder = result.orderSteps.placeOrder;
+        this.userData = result.userData;
+        this.initialData.is_logged_in = result.is_logged_in;
+        this.initialData.user = result.user;
       }
     },
     async paymentOptionPost(e) {
@@ -372,7 +382,7 @@ export default {
         this.orderSteps.shippingDetails = result.orderSteps.shippingDetails;
         this.orderSteps.paymentOptions = result.orderSteps.paymentOptions;
         this.orderSteps.placeOrder = result.orderSteps.placeOrder;
-        this.$router.push("/checkout");
+        this.order = result.order;
       }
     },
     async placeOrderPost(e) {

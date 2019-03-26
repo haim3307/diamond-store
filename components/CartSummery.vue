@@ -38,7 +38,7 @@
               <tr>
                 <td>Total Amount</td>
                 <td>
-                  <strong>${{order.total_price}}</strong>
+                  <strong v-html="order.total_price"></strong>
                 </td>
               </tr>
             </tfoot>

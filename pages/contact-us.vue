@@ -11,19 +11,24 @@
               <!-- Single Method Start -->
               <div class="col-lg-3 col-sm-6 text-center">
                 <div class="contact-method-item">
-                  <span class="method-icon"><i class="fa fa-map-marker" /></span>
+                  <span class="method-icon">
+                    <i class="fa fa-map-marker"/>
+                  </span>
                   <div class="method-info">
                     <h3>Street Address</h3>
-                    <p>Address : No 40 Baria Sreet 133/2 <br> NewYork City, NY, United States.</p>
+                    <p>Address : No 40 Baria Sreet 133/2
+                      <br>NewYork City, NY, United States.
+                    </p>
                   </div>
                 </div>
               </div>
               <!-- Single Method End -->
-
               <!-- Single Method Start -->
               <div class="col-lg-3 col-sm-6 text-center">
                 <div class="contact-method-item">
-                  <span class="method-icon"><i class="fa fa-phone" /></span>
+                  <span class="method-icon">
+                    <i class="fa fa-phone"/>
+                  </span>
                   <div class="method-info">
                     <h3>Phone Number</h3>
                     <a href="tel:0(1234)56789012">0(1234) 567 89012</a>
@@ -32,23 +37,27 @@
                 </div>
               </div>
               <!-- Single Method End -->
-
               <!-- Single Method Start -->
               <div class="col-lg-3 col-sm-6 text-center">
                 <div class="contact-method-item">
-                  <span class="method-icon"><i class="fa fa-envelope-open-o" /></span>
+                  <span class="method-icon">
+                    <i class="fa fa-envelope-open-o"/>
+                  </span>
                   <div class="method-info">
                     <h3>Number Fax</h3>
-                    <p>+1 323 555 1234 <br> +1 267 555 12342</p>
+                    <p>+1 323 555 1234
+                      <br>+1 267 555 12342
+                    </p>
                   </div>
                 </div>
               </div>
               <!-- Single Method End -->
-
               <!-- Single Method Start -->
               <div class="col-lg-3 col-sm-6 text-center">
                 <div class="contact-method-item">
-                  <span class="method-icon"><i class="fa fa-envelope" /></span>
+                  <span class="method-icon">
+                    <i class="fa fa-envelope"/>
+                  </span>
                   <div class="method-info">
                     <h3>Email Address</h3>
                     <a href="mailto:your@email.here">your@email.here</a>
@@ -70,36 +79,45 @@
           <div class="contact-form-wrap">
             <h2>Request a Quote</h2>
 
-            <form id="contact-form" action="" method="post">
+            <form id="contact-form" action method="post" @submit.prevent data-vv-scope="contact_form">
               <div class="row">
                 <div class="col-lg-6">
-                  <div class="single-input-item">
-                    <input type="text" name="first_name" placeholder="First Name *" required>
-                  </div>
+                  <single-input-item
+                    :label="'first name'"
+                    :name="'ship_'+'first_name'"
+                    :validate="''"
+                    :mode="'ship'"
+                  ></single-input-item>
                 </div>
 
                 <div class="col-lg-6">
-                  <div class="single-input-item">
-                    <input type="text" name="last_name" placeholder="Last Name *" required>
-                  </div>
+                  <single-input-item
+                    :label="'last name'"
+                    :name="'ship_'+'last_name'"
+                    :validate="''"
+                    :mode="'ship'"
+                  ></single-input-item>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-6">
                   <div class="single-input-item">
-                    <input
-                      type="email"
-                      name="email_address"
-                      placeholder="Email Address *"
-                      required
-                    >
+                    <single-input-item
+                      :label="'email'"
+                      :name="'email'"
+                      :validate="'email'"
+                    ></single-input-item>
                   </div>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="single-input-item">
-                    <input type="text" name="contact_subject" placeholder="Subject *" required>
+                    <single-input-item
+                      :label="'subject'"
+                      :name="'subject'"
+                      :validate="'email'"
+                    ></single-input-item>
                   </div>
                 </div>
               </div>
@@ -107,23 +125,15 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="single-input-item">
-                    <textarea
-                      id="message"
-                      name="message"
-                      cols="30"
-                      rows="6"
-                      placeholder="Message"
-                    />
+                    <b-textarea rows="15"></b-textarea>
                   </div>
 
                   <div class="single-input-item text-center">
-                    <button type="submit" name="submit" class="btn-add-to-cart">
-                      Send Meassage
-                    </button>
+                    <button type="submit" name="submit" class="btn-add-to-cart">Send Meassage</button>
                   </div>
 
                   <!-- Form Notification -->
-                  <div class="form-messege" />
+                  <!--<div class="form-messege"/>-->
                 </div>
               </div>
             </form>
@@ -136,11 +146,19 @@
 </template>
 
 <script>
+import SingleInputItem from "~/components/forms/SingleInputItem";
+
 export default {
-  components: {}
+  components: { SingleInputItem },
+  provide(){
+    return {
+      formScope:'contact_form',
+      source: {}
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-  @import "../assets/scss/views/users-contact_us.scss";
+@import "../assets/scss/views/users-contact_us.scss";
 </style>

@@ -87,22 +87,20 @@
 
                       <dl class="my-account">
                         <dt>My Account</dt>
-                        <dd v-if="initialData.is_logged_in">
-                          <a href="#>">Panel</a>
+                        <dd v-if="is_logged_in">
+                          <nuxt-link to="/account">Panel</nuxt-link>
                         </dd>
-                        <dd v-if="initialData.is_logged_in">
-                          <a href="#">Orders</a>
+                        <dd v-if="is_logged_in">
+                          <a href="/account/orders/">Orders</a>
                         </dd>
-                        <dd v-if="!initialData.is_logged_in">
+                        <dd v-if="!is_logged_in">
                           <nuxt-link to="/sign-in">Sign In</nuxt-link>
                         </dd>
-                        <dd v-if="!initialData.is_logged_in">
+                        <dd v-if="!is_logged_in">
                           <nuxt-link to="/join-us">Join Us</nuxt-link>
                         </dd>
-                        <dd v-if="initialData.is_logged_in">
-                          <form action="/api/users/logout" method="post">
-                            <a href>Sign Out</a>
-                          </form>
+                        <dd v-if="is_logged_in">
+                          <a href="#" @click.prevent="logout()">Sign Out</a>
                         </dd>
                       </dl>
 
@@ -121,7 +119,7 @@
                   </li>
                   <li class="shop-cart">
                     <nuxt-link to="/cart">
-                      <i class="fa fa-shopping-bag"/>
+                      <i class="fa fa-shopping-bag"></i>
                       <span class="count" v-html="initialData.orderItems.length"></span>
                     </nuxt-link>
                     <div class="mini-cart" ref="miniCart">
@@ -201,14 +199,12 @@
       </div>
     </div>
     <!--== Search Box Area End ==-->
-    
     <nuxt :key="$router.fullPath"/>
-   
+
     <!--    <pre>
         {{$router.currentRoute.name}}
     </pre>-->
-<!--     <router-view :key="$route.fullPath"></router-view> -->
-
+    <!--     <router-view :key="$route.fullPath"></router-view> -->
     <!-- Footer Area Start -->
     <footer id="footer-area">
       <!-- Footer Call to Action Start -->
@@ -429,7 +425,7 @@
 </template>
 
 <style lang="scss">
-.nuxt-progress{
+.nuxt-progress {
   z-index: 999999999999;
   background-color: #4d94db;
 }
@@ -446,7 +442,6 @@
   font-size: 1.5rem;
   font-style: initial;
 }
-
 </style>
 <script lang="ts" src="./default.ts"></script>
 
